@@ -1,0 +1,96 @@
+/* =============================================================================
+ * _animations.scss
+ * Author: Dillon Grove
+ * 
+ * Definitions for all animations and transitions used. This file is included by
+ * main.scss, and is not compiled standalone.
+ *
+ * ========================================================================== */
+
+/* ========== ANIMATION HELPERS ============================================= */
+.in, .out {
+    -webkit-animation-timing-function: cubic-bezier(.6,0,.4,1);
+    -webkit-animation-duration: 300ms;
+}
+
+/* ========== CROSSFADE ===================================================== */
+
+.crossfade.in {
+    -webkit-animation-name: crossfade-in;
+    z-index: 10;
+}
+
+.crossfade.out {
+    z-index: 0;
+}
+
+@-webkit-keyframes crossfade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========== FADE ========================================================== */
+.fade.out {
+    -webkit-animation-name: fade-out;
+}
+
+.fade.in {
+    -webkit-animation-name: fade-in;
+}
+
+@-webkit-keyframes fade-out {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-webkit-keyframes fade-in {
+    0% { opacity: 0; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ========== SLIDE ========================================================= */
+
+.push.out {
+    -webkit-animation-name: outToLeft;
+}
+
+.push.in {
+    -webkit-animation-name: inFromRight;
+}
+
+@-webkit-keyframes outToLeft {
+    from { -webkit-transform: translateX(0); }
+    to { -webkit-transform: translateX(-100%); }
+}
+
+@-webkit-keyframes inFromRight {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(0); }
+}
+
+@-webkit-keyframes inFromLeft {
+    from { -webkit-transform: translateX(-100%); }
+    to { -webkit-transform: translateX(0); }
+}
+
+.push.in.reverse {
+    -webkit-animation-name: inFromLeft;
+}
+
+@-webkit-keyframes outToRight {
+    from { -webkit-transform: translateX(0%); }
+    to { -webkit-transform: translateX(100%); }
+}
+
+.push.out.reverse {
+    -webkit-animation-name: outToRight;
+}
+
+/* ========== PUSH ========================================================== */
+
+.show.in {
+    -webkit-animation-name: fade-in;
+    -webkit-animation-duration: 400ms;
+}

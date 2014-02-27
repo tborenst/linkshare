@@ -1,0 +1,443 @@
+/* =============================================================================
+ * main.scss
+ * Author: Dillon Grove
+ * 
+ * This file is repsonsbile for importing all dependencies and providing main
+ * styles. It is the only file ultimately included in the page
+ *
+ * ========================================================================== */
+/* ========== IMPORTS ======================================================= */
+/* line 17, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../.rvm/gems/ruby-1.9.3-p327/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* =============================================================================
+ * _globals.scss
+ * Author: Dillon Grove
+ * 
+ * Definitions for global SCSS variables. This file is included by main.scss, 
+ * and is not compiled standalone.
+ *
+ * ========================================================================== */
+/* ========== COLORS ======================================================== */
+/* ========== SIZING AND LAYOUT ============================================ */
+/* =============================================================================
+ * _animations.scss
+ * Author: Dillon Grove
+ * 
+ * Definitions for all animations and transitions used. This file is included by
+ * main.scss, and is not compiled standalone.
+ *
+ * ========================================================================== */
+/* ========== ANIMATION HELPERS ============================================= */
+/* line 11, ../sass/_animations.scss */
+.in, .out {
+  -webkit-animation-timing-function: cubic-bezier(0.6, 0, 0.4, 1);
+  -webkit-animation-duration: 300ms;
+}
+
+/* ========== CROSSFADE ===================================================== */
+/* line 18, ../sass/_animations.scss */
+.crossfade.in {
+  -webkit-animation-name: crossfade-in;
+  z-index: 10;
+}
+
+/* line 23, ../sass/_animations.scss */
+.crossfade.out {
+  z-index: 0;
+}
+
+@-webkit-keyframes crossfade-in {
+  /* line 28, ../sass/_animations.scss */
+  from {
+    opacity: 0;
+  }
+
+  /* line 29, ../sass/_animations.scss */
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========== FADE ========================================================== */
+/* line 33, ../sass/_animations.scss */
+.fade.out {
+  -webkit-animation-name: fade-out;
+}
+
+/* line 37, ../sass/_animations.scss */
+.fade.in {
+  -webkit-animation-name: fade-in;
+}
+
+@-webkit-keyframes fade-out {
+  /* line 42, ../sass/_animations.scss */
+  0% {
+    opacity: 1;
+  }
+
+  /* line 43, ../sass/_animations.scss */
+  50% {
+    opacity: 0;
+  }
+
+  /* line 44, ../sass/_animations.scss */
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fade-in {
+  /* line 48, ../sass/_animations.scss */
+  0% {
+    opacity: 0;
+  }
+
+  /* line 49, ../sass/_animations.scss */
+  50% {
+    opacity: 0;
+  }
+
+  /* line 50, ../sass/_animations.scss */
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ========== SLIDE ========================================================= */
+/* line 55, ../sass/_animations.scss */
+.push.out {
+  -webkit-animation-name: outToLeft;
+}
+
+/* line 59, ../sass/_animations.scss */
+.push.in {
+  -webkit-animation-name: inFromRight;
+}
+
+@-webkit-keyframes outToLeft {
+  /* line 64, ../sass/_animations.scss */
+  from {
+    -webkit-transform: translateX(0);
+  }
+
+  /* line 65, ../sass/_animations.scss */
+  to {
+    -webkit-transform: translateX(-100%);
+  }
+}
+
+@-webkit-keyframes inFromRight {
+  /* line 69, ../sass/_animations.scss */
+  from {
+    -webkit-transform: translateX(100%);
+  }
+
+  /* line 70, ../sass/_animations.scss */
+  to {
+    -webkit-transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes inFromLeft {
+  /* line 74, ../sass/_animations.scss */
+  from {
+    -webkit-transform: translateX(-100%);
+  }
+
+  /* line 75, ../sass/_animations.scss */
+  to {
+    -webkit-transform: translateX(0);
+  }
+}
+
+/* line 78, ../sass/_animations.scss */
+.push.in.reverse {
+  -webkit-animation-name: inFromLeft;
+}
+
+@-webkit-keyframes outToRight {
+  /* line 83, ../sass/_animations.scss */
+  from {
+    -webkit-transform: translateX(0%);
+  }
+
+  /* line 84, ../sass/_animations.scss */
+  to {
+    -webkit-transform: translateX(100%);
+  }
+}
+
+/* line 87, ../sass/_animations.scss */
+.push.out.reverse {
+  -webkit-animation-name: outToRight;
+}
+
+/* ========== PUSH ========================================================== */
+/* line 93, ../sass/_animations.scss */
+.show.in {
+  -webkit-animation-name: fade-in;
+  -webkit-animation-duration: 400ms;
+}
+
+/*---------- BASIC STYLES --------------------------------------------------- */
+/* line 20, ../sass/main.scss */
+html {
+  /* prevent webkit and ms mobile browsers from resizing text */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  height: 100%;
+}
+
+/* line 28, ../sass/main.scss */
+body {
+  font-family: "HelveticaNeue", Arial, Helvetica, sans-serif;
+  height: 100%;
+}
+
+/* line 33, ../sass/main.scss */
+a:link {
+  /* change the tap highlight color in webkit browsers */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+}
+
+/* line 39, ../sass/main.scss */
+.standalone * {
+  /* prevent press and hold context menus in standalone mode */
+  -webkit-touch-callout: none;
+}
+
+/* line 44, ../sass/main.scss */
+#tab_bar, .top_bar {
+  /* prevent users from copy/pasting tab bar text in webkit browsers */
+  -webkit-user-select: none;
+}
+
+/*---------- TAB BAR -------------------------------------------------------- */
+/* line 51, ../sass/main.scss */
+#tab_bar {
+  background: #555555;
+  border-top: 1px solid #222222;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  zoom: 1;
+  /* hasLayout fix */
+  z-index: 9999;
+  /* force above full height panels */
+}
+/* line 62, ../sass/main.scss */
+#tab_bar:before, #tab_bar:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
+/* line 69, ../sass/main.scss */
+#tab_bar:after {
+  clear: both;
+}
+/* line 73, ../sass/main.scss */
+#tab_bar li {
+  display: inline;
+  float: left;
+  width: 20%;
+}
+/* line 79, ../sass/main.scss */
+#tab_bar a {
+  color: #bbbbbb;
+  display: block;
+  font-size: 0.7em;
+  font-weight: bold;
+  height: 5.6em;
+  overflow: hidden;
+  padding-top: .5em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  border-right: 1px solid #555555;
+  border-left: 1px solid #333333;
+}
+/* line 95, ../sass/main.scss */
+#tab_bar .icon {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  margin: .4em 0 .6em 0;
+  border-radius: 10px;
+  background-color: #999999;
+  pointer-events: none;
+}
+/* line 107, ../sass/main.scss */
+#tab_bar .tab_selected .icon {
+  background-color: #019bc6;
+}
+/* line 111, ../sass/main.scss */
+#tab_bar li:first-child a {
+  border-left: none;
+}
+/* line 115, ../sass/main.scss */
+#tab_bar li:last-child a {
+  border-right: none;
+}
+/* line 119, ../sass/main.scss */
+#tab_bar .tab_selected a {
+  color: #ffffff;
+  border: none;
+  background: #222222;
+  /* Old browsers */
+}
+
+/*---------- PANELS --------------------------------------------------------- */
+/* line 128, ../sass/main.scss */
+#panels {
+  height: 100%;
+  position: relative;
+  /* prevent momentary scrollbar when using sliding transition */
+  overflow-x: hidden;
+}
+
+/* line 136, ../sass/main.scss */
+#panels > div.current {
+  display: block;
+}
+
+/* line 140, ../sass/main.scss */
+.panel_wrapper {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: none;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #e0e0e0;
+}
+
+/* line 152, ../sass/main.scss */
+.padded_content_wrapper {
+  padding: 1.75em;
+  padding-bottom: 6.5em;
+  margin-top: 2.6em;
+}
+
+/*---------- TOP BAR -------------------------------------------------------- */
+/* line 160, ../sass/main.scss */
+.top_bar {
+  height: 2.6em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #555555;
+  /* Old browsers */
+  color: white;
+  /* only apply this left border if the h1 is directly preceded by a displayed
+   * back button (one that hasBack)
+   */
+}
+/* line 170, ../sass/main.scss */
+.top_bar h1 {
+  float: left;
+  padding: .8em;
+}
+/* line 175, ../sass/main.scss */
+.top_bar .back {
+  color: #aaa;
+  float: left;
+  width: 2.6em;
+  height: 2.6em;
+  display: none;
+  border-right: 1px solid #555;
+}
+/* line 187, ../sass/main.scss */
+.top_bar .back.hasBack + h1 {
+  border-left: 1px solid #222;
+}
+
+/* line 193, ../sass/main.scss */
+.chevron {
+  background-image: url("../images/chevrons.png");
+}
+
+/* line 199, ../sass/main.scss */
+.back.hasBack {
+  display: block;
+}
+/* line 203, ../sass/main.scss */
+.back .chevron {
+  width: 15px;
+  height: 24px;
+  position: absolute;
+  left: .8em;
+  top: 50%;
+  margin-top: -12px;
+  background-position: bottom left;
+  background-size: 30px;
+}
