@@ -1,9 +1,9 @@
-/* ---------- IMPORTS ------------------------------------------------------ */
+/* ---------- IMPORTS ------------------------------------------------------- */
 
 var constants = require("./constants.js");
 var mongo = require("mongodb");
 
-/* ---------- SETUP -------------------------------------------------------- */
+/* ---------- SETUP --------------------------------------------------------- */
 
 var host = constants.DB_HOST;
 var port = mongo.Connection.DEFAULT_PORT;
@@ -17,9 +17,6 @@ var client = new mongo.Db(
     options
 );
 var dbOpen = false;
-
-// open linkshare database when this module is activated
-openDb();
 
 /* ---------- UTILITIES ----------------------------------------------------- */
 
@@ -75,6 +72,8 @@ var getCollection = function(name, callback, veto){
         }, 0);
     }
 }
+
+/* ---------- USER METHODS -------------------------------------------------- */
 
 /**
  * findUser:
@@ -151,3 +150,92 @@ var deleteAllUsers = function(callback){
         }
     });
 }
+
+/* ---------- LINK METHODS -------------------------------------------------- */
+
+var makeRandomId = function(length){
+    var alphabet = "1234567890abcdefghijklmnopqrstuvABCDEFGHIJKLMNOP";
+    var id = "";
+    for(var i = 0; i < length; i++){
+        var randomIndex = Math.round((Math.random()*alphabet.length));
+        id += alphabet[randomIndex];
+    }
+    return id;
+}
+
+var makeLinkObject = function(username, url, title, location){
+    var date = new Date();
+    var dateStr = date.toDateString();
+    var linkId = makeRandomId(10);
+    return {
+        username: username,
+        url: url,
+        title: title,
+        location: location,
+        date: dateStr,
+        upvotes: [username],
+        downvotes: [],
+        linkId: linkId
+    };
+}
+
+/**
+ * addLink:
+ * - callback takes arguments (error)
+ * - error will be null if operation successful
+ ***/
+var addLink = function(username, url, title, location, callback){
+    getCollection(constants.DB_LINKS, function(error, collection){
+        if(error){
+            callback(constants.ERR_INTERNAL);
+        } else {
+            var linkObject = makeLinkObject(username, url, title, location);
+            collection.insert(linkObject, function(error){
+                if(error){
+                    callback(constants.ERR_INTERNAL);
+                } else {
+                    callback(null);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * findLink:
+ * - callback takes arguments (error, linkObject)
+ * - linkObject will be null no link exists
+ ***/
+var findLink = function(linkId, callback){
+    getCollection(constants.DB_LINKS, function(error, collection){
+        if(error){
+            callback(constants.ERR_INTERNAL, null);
+        } else {
+            var query = {linkId: linkId}
+            collection.findOne(query, function(error, result){
+                if(error){
+                    callback(constants.ERR_INTERNAL, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        }
+    });
+}
+
+
+/* ---------- EXPORTS ------------------------------------------------------- */
+
+openDb();
+
+module.exports = {
+
+};
+
+
+
+
+
+
+
+
