@@ -279,8 +279,8 @@ a:link {
 /*---------- TAB BAR -------------------------------------------------------- */
 /* line 51, ../sass/main.scss */
 #tab_bar {
-  background: #555555;
-  border-top: 1px solid #222222;
+  background: #222222;
+  border-top: 1px solid #111111;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -319,7 +319,7 @@ a:link {
   position: relative;
   text-align: center;
   text-decoration: none;
-  border-right: 1px solid #555555;
+  border-right: 1px solid #333333;
   border-left: 1px solid #333333;
 }
 /* line 95, ../sass/main.scss */
@@ -347,13 +347,11 @@ a:link {
 /* line 119, ../sass/main.scss */
 #tab_bar .tab_selected a {
   color: #ffffff;
-  border: none;
-  background: #222222;
-  /* Old browsers */
+  background: #111111;
 }
 
 /*---------- PANELS --------------------------------------------------------- */
-/* line 128, ../sass/main.scss */
+/* line 127, ../sass/main.scss */
 #panels {
   height: 100%;
   position: relative;
@@ -361,12 +359,12 @@ a:link {
   overflow-x: hidden;
 }
 
-/* line 136, ../sass/main.scss */
+/* line 135, ../sass/main.scss */
 #panels > div.current {
   display: block;
 }
 
-/* line 140, ../sass/main.scss */
+/* line 139, ../sass/main.scss */
 .panel_wrapper {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -380,7 +378,7 @@ a:link {
   background-color: #e0e0e0;
 }
 
-/* line 152, ../sass/main.scss */
+/* line 151, ../sass/main.scss */
 .padded_content_wrapper {
   padding: 1.75em;
   padding-bottom: 6.5em;
@@ -388,26 +386,25 @@ a:link {
 }
 
 /*---------- TOP BAR -------------------------------------------------------- */
-/* line 160, ../sass/main.scss */
+/* line 159, ../sass/main.scss */
 .top_bar {
   height: 2.6em;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: #555555;
-  /* Old browsers */
+  background: #222222;
   color: white;
   /* only apply this left border if the h1 is directly preceded by a displayed
    * back button (one that hasBack)
    */
 }
-/* line 170, ../sass/main.scss */
+/* line 169, ../sass/main.scss */
 .top_bar h1 {
   float: left;
   padding: .8em;
 }
-/* line 175, ../sass/main.scss */
+/* line 174, ../sass/main.scss */
 .top_bar .back {
   color: #aaa;
   float: left;
@@ -416,21 +413,21 @@ a:link {
   display: none;
   border-right: 1px solid #555;
 }
-/* line 187, ../sass/main.scss */
+/* line 186, ../sass/main.scss */
 .top_bar .back.hasBack + h1 {
   border-left: 1px solid #222;
 }
 
-/* line 193, ../sass/main.scss */
+/* line 192, ../sass/main.scss */
 .chevron {
   background-image: url("../images/chevrons.png");
 }
 
-/* line 199, ../sass/main.scss */
+/* line 198, ../sass/main.scss */
 .back.hasBack {
   display: block;
 }
-/* line 203, ../sass/main.scss */
+/* line 202, ../sass/main.scss */
 .back .chevron {
   width: 15px;
   height: 24px;
