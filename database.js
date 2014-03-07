@@ -163,6 +163,11 @@ var makeRandomId = function(length){
     return id;
 }
 
+/**
+ * makeLinkObject:
+ * Helper method. Creates a linkObject with all required fields and a random
+ * linkId.
+ ***/
 var makeLinkObject = function(username, url, title, location){
     var date = new Date();
     var dateStr = date.toDateString();
@@ -173,6 +178,7 @@ var makeLinkObject = function(username, url, title, location){
         title: title,
         location: location,
         date: dateStr,
+        score: 1,
         upvotes: [username],
         downvotes: [],
         linkId: linkId
@@ -204,7 +210,7 @@ var addLink = function(username, url, title, location, callback){
 /**
  * findLink:
  * - callback takes arguments (error, linkObject)
- * - linkObject will be null no link exists
+ * - linkObject will be null if no link exists
  ***/
 var findLink = function(linkId, callback){
     getCollection(constants.DB_LINKS, function(error, collection){
@@ -223,6 +229,139 @@ var findLink = function(linkId, callback){
     });
 }
 
+/**
+ * getTopNLinks:
+ * - callback takes arguments (error, results)
+ * - results is an array of max-length n of linkObjects sorted by score in 
+ *   descending order. 
+ ***/
+var getTopNLinks = function(n, callback){
+    getCollection(constants.DB_LINKS, function(error, collection){
+        if(error){
+            callback(constants.ERR_INTERNAL, null);
+        } else {
+            var cursor = collection.find().limit(n).sort({score: -1});
+            cursor.toArray(function(error, results){
+                if(error){
+                    callback(constants.ERR_INTERNAL, null);
+                } else {
+                    callback(null, results);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * upvoteLink:
+ * Move username from downvote list to upvote list (if user downvoted link) or
+ * insert username into upvote list(if user not downvoted link before). Compute
+ * new score of the link.
+ * - callback takes arguments (error)
+ * - error will be null operation is successful
+ ***/
+var upvoteLink = function(linkId, username, callback){
+    findLink(linkId, function(error, linkObject){
+        if(error){ 
+            callback(constants.ERR_INTERNAL);
+        } else {
+            // update upvote and downvote lists
+            var upvotes = linkObject.upvotes;
+            var downvotes = linkObject.downvotes;
+            if(upvotes.indexOf(username) !== -1){
+                // user already upvoted
+                callback(null);
+                return;
+            } else if(downvotes.indexOf(username) !== -1){
+                // move user from downvote to upvote
+                var userIndex = downvotes.indexOf(username);
+                downvotes.splice(userIndex, 1);
+                upvotes.push(username);
+            } else {
+                // user upvotes for the first time
+                upvotes.push(username);
+            }
+            // update object
+            linkObject.upvotes = upvotes;
+            linkObject.downvotes = downvotes;
+            linkObject.score = upvotes.length - downvotes.length;
+            // save object in the links collection
+            getCollection(constants.DB_LINKS, function(error, collection){
+                if(error){
+                    callback(constants.ERR_INTERNAL);
+                } else {
+                    collection.save(linkObject, {safe: true}, function(error){
+                        if(error){
+                            callback(constants.ERR_INTERNAL);
+                        } else {
+                            callback(null);
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+var downvoteLink = function(linkId, username, callback){
+    findLink(linkId, function(error, linkObject){
+        if(error){ 
+            callback(constants.ERR_INTERNAL);
+        } else {
+            // update upvote and downvote lists
+            var upvotes = linkObject.upvotes;
+            var downvotes = linkObject.downvotes;
+            if(downvotes.indexOf(username) !== -1){
+                // user already downvoted
+                callback(null);
+                return;
+            } else if(upvotes.indexOf(username) !== -1){
+                // move user from upvote to downvote
+                var userIndex = upvotes.indexOf(username);
+                upvotes.splice(userIndex, 1);
+                downvotes.push(username);
+            } else {
+                // user downvotes for the first time
+                downvotes.push(username);
+            }
+            // update object
+            linkObject.upvotes = upvotes;
+            linkObject.downvotes = downvotes;
+            linkObject.score = upvotes.length - downvotes.length;
+            // save object in the links collection
+            getCollection(constants.DB_LINKS, function(error, collection){
+                if(error){
+                    callback(constants.ERR_INTERNAL);
+                } else {
+                    collection.save(linkObject, {safe: true}, function(error){
+                        if(error){
+                            callback(constants.ERR_INTERNAL);
+                        } else {
+                            callback(null);
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+var deleteAllLinks = function(callback){
+    getCollection(constants.DB_LINKS, function(error, collection){
+        if(error){
+            callback(constants.ERR_INTERNAL);
+        } else {
+            collection.drop(function(error){
+                if(error){
+                    console.log(error);
+                    callback(constants.ERR_INTERNAL);
+                } else {
+                    callback(null);
+                }
+            });
+        }
+    });
+}
 
 /* ---------- EXPORTS ------------------------------------------------------- */
 
