@@ -486,12 +486,13 @@ a:link {
 /* line 254, ../sass/main.scss */
 .post_content h2 {
   font-size: 16px;
+  line-height: 18px;
 }
-/* line 258, ../sass/main.scss */
+/* line 259, ../sass/main.scss */
 .post_content .post_domain {
   color: #666;
 }
-/* line 262, ../sass/main.scss */
+/* line 263, ../sass/main.scss */
 .post_content .post_info {
   font-size: 12px;
   color: #aaa;
