@@ -131,6 +131,53 @@ var addUser = function(username, password, callback){
 }
 
 /**
+ * validateUserPassword:
+ * Determines whether a username/password pair is valid.
+ * - callback takes arguments (error, valid)
+ * - valid: true if username/password pair valid, false otherwise or if error
+ * TODO: hash passwords
+ ***/
+var validateUserPassword = function(username, password, callback){
+    findUser(username, function(error, userObject){
+        if(error){
+            callback(constants.ERR_INTERNAL, false);
+        } else {
+            if(userObject.password == password){
+                callback(null, true);
+            } else {
+                callback(null, false);
+            }
+        }
+    });
+}
+
+/**
+ * deserializeUser:
+ * Method to help with Passport authentication.
+ * - callback takes arguments (error, userObject)
+ ***/
+var deserializeUser = function(userString, callback){
+    var username = userString;
+    findUser(username, function(error, userObject){
+        if(error){
+            callback(constants.ERR_INTERNAL, null);
+        } else {
+            callback(null, userObject);
+        }
+    });
+}
+
+/**
+ * serializeUser:
+ * Method to help with Passport authentication.
+ * - callback takes arguments (error, userString)
+ ***/
+var serializeUser = function(userObject, callback){
+    var userString = userObject.username;
+    callback(null, userString);
+}
+
+/**
  * deleteAllUsers:
  * - callback takes arguments (error)
  * - error will be null if operation successful
@@ -255,7 +302,7 @@ var getTopNLinks = function(n, callback){
 /**
  * upvoteLink:
  * Move username from downvote list to upvote list (if user downvoted link) or
- * insert username into upvote list(if user not downvoted link before). Compute
+ * insert username into upvote list (if user not downvoted link before). Compute
  * new score of the link.
  * - callback takes arguments (error)
  * - error will be null operation is successful
@@ -303,6 +350,14 @@ var upvoteLink = function(linkId, username, callback){
     });
 }
 
+/**
+ * downvoteLink:
+ * Move username from upvote list to downvote list (if user upvoted link) or
+ * insert username into downvoted list (if user not upvoted link before). 
+ * Compute new score of the link.
+ * - callback takes arguments (error)
+ * - error will be null operation is successful
+ ***/
 var downvoteLink = function(linkId, username, callback){
     findLink(linkId, function(error, linkObject){
         if(error){ 

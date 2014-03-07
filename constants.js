@@ -6,5 +6,8 @@ module.exports = {
     // errors
     ERR_INTERNAL: "internal server error",
     ERR_USER_EXISTS: "username already exists",
-    ERR_NOT_MATCH: "the username/password combination does not match"
+    ERR_NOT_MATCH: "the username/password combination does not match",
+    // auth
+    AUTH_SUCCESS: "authentication successful",
+    AUTH_FAILURE: "authentication failed"
 }
