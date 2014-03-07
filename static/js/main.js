@@ -26,33 +26,33 @@ $(document).ready(function(){
         /* ..and add it back to the one that was just clicked */
         $(e.target).parent().addClass("tab_selected");
 
-        var next_panel = $(e.target.hash);
+        var nextPanel = $(e.target.hash);
 
         /* fetch data for whatever page we're loading */
-        load_content(next_panel);
+        loadContent(nextPanel);
 
-        transition(next_panel, "crossfade");
+        transition(nextPanel, "crossfade");
     });
 
     /* bind all other panel links */
     $("#panels").on("click", "a.panel_link", function(e){
         e.preventDefault();
 
-        var next_panel = $(e.target.hash);
-        transition(next_panel, "push");
+        var nextPanel = $(e.target.hash);
+        transition(nextPanel, "push");
     });
 
     /* bind back button click event */
     $("#panels").on("click", ".back", function(e){
         /* find the last panel in history, and transition to it, if possible */
         e.preventDefault();
-        var last_panel = visits.back();
-        if(last_panel) {
-            transition(last_panel, "push", true);
+        var lastPanel = visits.back();
+        if(lastPanel) {
+            transition(lastPanel, "push", true);
         }
     });
 
-    load_content($("#feed_panel"));
+    loadContent($("#feed_panel"));
 
 });
 
@@ -88,23 +88,23 @@ function transition(toPanel, type, reverse) {
 }
 
 /* a load function to simulate responses from a server */
-function load_content(next_panel){
-    var panel_to_load = next_panel.attr("id");
-    var load_target;
+function loadContent(nextPanel){
+    var panelToLoad = nextPanel.attr("id");
+    var loadTarget;
     var content;
 
-    switch(panel_to_load){
+    switch(panelToLoad){
         case "feed_panel":
-            content = get_html("link_posts_template", LinkShare.posts);
+            content = getHTML("link_posts_template", LinkShare.posts);
             console.log("content", content);
-            load_target = next_panel.find(".content_wrapper");
+            loadTarget = nextPanel.find(".content_wrapper");
             break;
         default:
             console.log("no data to load");
     }
 
     if(content){
-        $(load_target).html(content);
+        $(loadTarget).html(content);
     }
 }
 
@@ -132,7 +132,7 @@ var visits = {
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
 
 /* Helper function to compile and render a handlebars template into html */
-function get_html(templateID, context){
+function getHTML(templateID, context){
     var source = $("#" + templateID).html();
     var template = Handlebars.compile(source);
     var html = template(context);
