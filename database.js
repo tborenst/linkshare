@@ -91,7 +91,11 @@ var findUser = function(username, callback){
                 if(error){
                     callback(constants.ERR_INTERNAL, null);
                 } else {
-                    callback(null, result);
+                    if(result && result.username === username){
+                        callback(null, result);
+                    } else {
+                        callback(null, null);
+                    }
                 }
             });
         }
@@ -408,7 +412,6 @@ var deleteAllLinks = function(callback){
         } else {
             collection.drop(function(error){
                 if(error){
-                    console.log(error);
                     callback(constants.ERR_INTERNAL);
                 } else {
                     callback(null);
@@ -423,7 +426,20 @@ var deleteAllLinks = function(callback){
 openDb();
 
 module.exports = {
-
+    // User Methods
+    findUser: findUser,
+    addUser: addUser,
+    validateUserPassword: validateUserPassword,
+    deserializeUser: deserializeUser,
+    serializeUser: serializeUser,
+    deleteAllUsers: deleteAllUsers,
+    // Link Methods
+    addLink: addLink,
+    findLink: findLink,
+    getTopNLinks: getTopNLinks,
+    upvoteLink: upvoteLink,
+    downvoteLink: downvoteLink,
+    deleteAllLinks: deleteAllLinks
 };
 
 

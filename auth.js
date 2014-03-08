@@ -13,7 +13,7 @@ passport.use(new LocalStrategy({
             if(error){
                 return done(error, null, {message: constants.ERR_INTERNAL});
             } else {
-                database.validateUserPassword(username, password, function(error, valid)){
+                database.validateUserPassword(username, password, function(error, valid){
                     if(error){
                         return done(error, null, {message: constants.ERR_INTERNAL});
                     } else if(valid){
@@ -21,7 +21,7 @@ passport.use(new LocalStrategy({
                     } else {
                         return done(null, false, {message: constants.AUTH_FAILURE});
                     }
-                }
+                });
             }
         });
     }
