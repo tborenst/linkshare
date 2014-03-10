@@ -21,53 +21,52 @@
         <!-- bottom tabs -->
         <ul id="tab_bar">
             <li id="tab_1">
-                <a href="#panel_1">
+                <a href="#profile_panel">
                     <div class="icon"></div><br>
-                    Panel 1
+                    Profile
                 </a>
             </li>
-            <li id="tab_2">
-                <a href="#panel_2">
+            <li id="tab_2" class="tab_selected">
+                <a href="#feed_panel">
                     <div class="icon"></div><br>
-                    Panel 2
+                    Feed
                 </a>
             </li>
-            <li id="tab_3" class="tab_selected">
-                <a href="#panel_3">
+            <li id="tab_3">
+                <a href="#post_panel">
                     <div class="icon"></div><br>
-                    Panel 3
+                    Post
                 </a>
             </li>
         </ul>
 
         <!-- panels -->
         <div id="panels">
-            <div id="panel_1" class="panel_wrapper">
+            <div id="profile_panel" class="panel_wrapper">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
-                    <h1>Panel 1</h1>
+                    <h1>Your Profile</h1>
                 </div>
                 <div class="padded_content_wrapper">
-                    <p>Panel 1 Content</p>
+                    <p>Profile Panel Content</p>
                     <a href="#panel_1-2" class="panel_link">Panel 1-2</a>
                 </div>
             </div>
-            <div id="panel_2" class="panel_wrapper">
+            <div id="feed_panel" class="panel_wrapper current">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
-                    <h1>Panel 2</h1>
+                    <h1>Feed</h1>
                 </div>
-                <div class="padded_content_wrapper">
-                    <p>Panel 2 Content</p>
+                <div class="content_wrapper">
                 </div>
             </div>
-            <div id="panel_3" class="panel_wrapper current">
+            <div id="post_panel" class="panel_wrapper">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
-                    <h1>Panel 3</h1>
+                    <h1>New Post</h1>
                 </div>
                 <div class="padded_content_wrapper">
-                    <p>Panel 3 Content</p>
+                    <p>Post Panel Content</p>
                 </div>
             </div>
 
@@ -87,6 +86,27 @@
         <script type="text/javascript" src="js/main.js"></script>
 
         <!-- handlebars templates go here -->
+
+        <script id="link_posts_template" type="text/x-handlebars-template">
+            <ul class="link_posts">
+                {{#each this}}
+                    <li class="link_post">
+                        <div class="scoring">
+                            <div class="upvote"></div>
+                            <div class="score">{{ this.score }}</div>
+                            <div class="downvote"></div>
+                        </div>
+                        <div class="post_content">
+                            <h2>
+                                <a href="#">{{ this.title }}</a>
+                                <span class="post_domain">({{ this.url }})</span>
+                            </h2>
+                            <span class="post_info">submitted at {{ this.dateStr }} by {{ this.username }}</span>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        </script>
 
     </body>
 </html>
