@@ -84,15 +84,11 @@ app.post("/link", auth.authSession, function(req, res){
 	var url = req.body.url;
 	var title = req.body.title;
 	var location = req.body.location;
-	console.log("ADDING LINK:");
-	console.log(username, url, title, location);
 	database.addLink(username, url, title, location, function(error){
 		if(error){
 			res.status(424).send({message: constants.MSG_INTERNAL});
-			console.log("- error");
 		} else {
 			res.status(200).send({message: constants.MSG_OK});
-			console.log("- link added")
 		}
 	});
 });
