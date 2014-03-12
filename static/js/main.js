@@ -52,6 +52,12 @@ $(document).ready(function(){
         }
     });
 
+    $("form[name=new_post_form]").submit(function(e){
+        e.preventDefault();
+        var data = $(this).jsonSerializeForm();
+        //TODO: Submit data to server
+    });
+
     loadContent($("#feed_panel"));
 
 });
@@ -96,7 +102,6 @@ function loadContent(nextPanel){
     switch(panelToLoad){
         case "feed_panel":
             content = getHTML("link_posts_template", LinkShare.posts);
-            console.log("content", content);
             loadTarget = nextPanel.find(".content_wrapper");
             break;
         default:
@@ -141,6 +146,8 @@ function getHTML(templateID, context){
 
 /* ---------- DATA ---------------------------------------------------------- */
 
+/* SAMPLE DATA FOR FRONT-END TESTING, NOT INTENDED FOR PRODUCTION USE */
+
 var LinkShare = {
     posts: [{
         title: "Bouncer fights off gunman",
@@ -164,4 +171,23 @@ var LinkShare = {
         score: 278
     },
     ]
-}
+};
+
+/* ---------- OTHER UTILS --------------------------------------------------- */
+
+/* Given a form object, returns a stringified JSON object of all form elements
+ * with name attributes. There are lots of ways to accomplish this, and this
+ * one isn't perfect, but it seems good enough for our purposes
+ */
+(function ($) {
+    jQuery.fn.jsonSerializeForm = function(){
+        var obj = {};
+        var form = this[0];
+        $(form.elements).each(function(){
+            if(this.name){
+                obj[this.name] = $(this).val();
+            }
+        });
+        return JSON.stringify(obj);
+    }
+}(jQuery));
