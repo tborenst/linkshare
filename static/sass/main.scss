@@ -46,6 +46,61 @@ a:link {
     -webkit-user-select: none;
 }
 
+/*---------- FORM ELEMENTS -------------------------------------------------- */
+
+input {
+    display: block;
+    width: 100%;
+    @include box-sizing(border-box);
+    -webkit-appearance: none; /* remove webkit default input styling */
+
+    &:focus {
+        /* overwrite webkit default input focus outline */
+        outline: 1px solid #019bc6;
+    }
+}
+
+input[type=text], button {
+    border: 1px solid #ccc;
+    padding: 8px;
+    @include border-radius(2px);
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+input[type=text] {
+    @include box-shadow(inset 0px 2px 4px #efefef);
+}
+
+label {
+    color: #666;
+    margin-bottom: 8px;
+    width: 100%;
+    display: block;
+}
+
+form button {
+    width: 100%;
+}
+
+/*---------- BUTTONS -------------------------------------------------------- */
+
+button {
+    border: none;
+    background-color: #019bc6;
+    color: white;
+    padding: 12px;
+
+    &:active {
+        background-color: darken(#019bc6, 5%);
+    }
+
+    &:focus {
+        outline: 1px solid white;
+        outline-offset: -4px;
+    }
+}
+
 /*---------- TAB BAR -------------------------------------------------------- */
 
 #tab_bar {
@@ -145,7 +200,7 @@ a:link {
     left: 0;
     width: 100%;
 
-    background-color: #e0e0e0;
+    background-color: white;
 }
 
 .padded_content_wrapper {
