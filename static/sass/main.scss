@@ -56,7 +56,7 @@ input {
 
     &:focus {
         /* overwrite webkit default input focus outline */
-        outline: 2px solid #019bc6;
+        outline: 2px solid $brandColor1;
         outline-offset: 1px;
     }
 }
@@ -88,12 +88,12 @@ form button {
 
 button {
     border: none;
-    background-color: #019bc6;
+    background-color: $brandColor1;
     color: white;
     padding: 12px;
 
     &:active {
-        background-color: darken(#019bc6, 5%);
+        background-color: darken($brandColor1, 5%);
     }
 
     &:focus {
@@ -130,17 +130,17 @@ button {
     li {
         display: inline;
         float: left;
-        width: 100%/$num_tabs;
+        width: 100%/$numTabs;
     }
 
     a {
         color: #bbbbbb;
         display: block;
-        font-size: 0.7em;
+        font-size: 11px;
         font-weight: bold;
-        height: 5.6em;
+        height: 62px;
         overflow: hidden;
-        padding-top: .5em;
+        padding-top: 6px;
         position: relative;
         text-align: center;
         text-decoration: none;
@@ -153,7 +153,7 @@ button {
         height: 30px;
         width: 30px;
         display: inline-block;
-        margin: .4em 0 .6em 0;
+        margin: 5px 0 7px 0;
         border-radius: 10px;
 
         background-color: #999999;
@@ -162,7 +162,7 @@ button {
     }
 
     .tab_selected .icon {
-        background-color: $tab_bar_icon_active;
+        background-color: $brandColor1;
     }
 
     li:first-child a {
@@ -206,19 +206,19 @@ button {
 }
 
 .padded_content_wrapper {
-    padding: 1.75em;
-    padding-bottom: 6.5em;
-    margin-top: 2.6em;  
+    padding: 20px;
+    padding-bottom: 78px; /* wha...? */
+    margin-top: $top_bar_height;  
 }
 
 .content_wrapper {
-    margin-top: 2.6em;
+    margin-top: $top_bar_height;
 }
 
 /*---------- TOP BAR -------------------------------------------------------- */
 
 .top_bar {
-    height: 2.6em;
+    height: $top_bar_height;
     position: fixed;
     top: 0;
     left: 0;
@@ -229,14 +229,15 @@ button {
 
     h1 {
         float: left;
-        padding: .8em;
+        padding: 13px;
+        font-weight: bold;
     }
 
     .back {
         color: #aaa;
         float: left;
-        width: 2.6em;
-        height: 2.6em;
+        width: 32px;
+        height: 32px;
         display: none;
         border-right: 1px solid #555;
     }
@@ -264,7 +265,7 @@ button {
         width: 15px;
         height: 24px;
         position: absolute;
-        left: .8em;
+        left: 10px; 
         top: 50%;
         margin-top: -12px;
 
