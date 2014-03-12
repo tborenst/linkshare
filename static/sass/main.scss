@@ -106,6 +106,8 @@ button {
 /*---------- TAB BAR -------------------------------------------------------- */
 
 #tab_bar {
+    @include box-sizing(border-box);
+    height: $tabBarHeight;
     background: #222222;
     border-top: 1px solid #111111;
 
@@ -130,6 +132,7 @@ button {
     li {
         display: inline;
         float: left;
+        height: $tabBarHeight;
         width: 100%/$numTabs;
     }
 
@@ -138,7 +141,7 @@ button {
         display: block;
         font-size: 11px;
         font-weight: bold;
-        height: 62px;
+        height: $tabBarHeight;
         overflow: hidden;
         padding-top: 6px;
         position: relative;
@@ -205,20 +208,19 @@ button {
     background-color: #333;
 }
 
-.padded_content_wrapper {
-    padding: 20px;
-    padding-bottom: 78px; /* wha...? */
-    margin-top: $top_bar_height;  
+.padded_content_wrapper, .content_wrapper {
+    margin-top: $topBarHeight;
+    padding-bottom: $tabBarHeight;
 }
 
-.content_wrapper {
-    margin-top: $top_bar_height;
+.padded_content_wrapper {
+    padding: 20px; 
 }
 
 /*---------- TOP BAR -------------------------------------------------------- */
 
 .top_bar {
-    height: $top_bar_height;
+    height: $topBarHeight;
     position: fixed;
     top: 0;
     left: 0;
