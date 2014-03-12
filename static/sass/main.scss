@@ -56,7 +56,8 @@ input {
 
     &:focus {
         /* overwrite webkit default input focus outline */
-        outline: 1px solid #019bc6;
+        outline: 2px solid #019bc6;
+        outline-offset: 1px;
     }
 }
 
@@ -73,7 +74,7 @@ input[type=text] {
 }
 
 label {
-    color: #666;
+    color: #ccc;
     margin-bottom: 8px;
     width: 100%;
     display: block;
@@ -96,8 +97,9 @@ button {
     }
 
     &:focus {
-        outline: 1px solid white;
-        outline-offset: -4px;
+        /* overwrite webkit default input focus outline */
+        outline: 2px solid white;
+        outline-offset: 0px;
     }
 }
 
@@ -200,7 +202,7 @@ button {
     left: 0;
     width: 100%;
 
-    background-color: white;
+    background-color: #333;
 }
 
 .padded_content_wrapper {
