@@ -58,6 +58,32 @@ $(document).ready(function(){
         //TODO: Submit data to server
     });
 
+    $("form[name=create_account_form]").submit(function(e){
+        e.preventDefault();
+        var data = $(this).jsonSerializeForm();
+
+        $.ajax({
+            type: "POST",
+            url: "/user",
+            contentType: "application/json",
+            data: data,
+            dataType: "json",
+            success: function(response, status){
+                if(status = "200"){
+                    console.log(response.message);
+                    //TODO: Show success message
+                    //TODO: Either login and go to feed panel or transition
+                    //      to login panel
+                }
+            },
+            error: function(jqXHR, exception) {
+                var errorMsg = $.parseJSON(jqXHR.responseText).message;
+                console.log(errorMsg);
+                //TODO: Show error message 
+            }
+        });
+    });
+
     //TODO: detect if user already logged in and go straight to feed?
     loadContent($("#login_panel"));
     visits.add($("#login_panel"));

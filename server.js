@@ -10,7 +10,6 @@ var constants = require("./constants.js");
 /* ---------- CONFIGURATION ------------------------------------------------- */
 
 app.configure(function(){ 
-	app.use(express.bodyParser());
 	app.use(express.static(path.join(__dirname, "/static")));
 	app.set("port", process.env.PORT || 8000);
 	app.use(express.cookieParser());
