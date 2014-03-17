@@ -60,6 +60,7 @@ $(document).ready(function(){
 
     //TODO: detect if user already logged in and go straight to feed?
     loadContent($("#login_panel"));
+    visits.add($("#login_panel"));
 
 });
 

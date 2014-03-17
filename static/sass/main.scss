@@ -48,7 +48,7 @@ a:link {
 
 /*---------- FORM ELEMENTS -------------------------------------------------- */
 
-input {
+input, .button {
     display: block;
     width: 100%;
     @include box-sizing(border-box);
@@ -61,14 +61,14 @@ input {
     }
 }
 
-input[type=text], button {
+input[type=text], input[type=password], button, .button {
     @include border-radius(4px);
     padding: 12px;
     font-size: 14px;
     margin-bottom: 22px;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     @include box-shadow(inset 0px 2px 4px #000000);
     color: white;
     background-color: #222;
@@ -82,13 +82,13 @@ label {
     display: block;
 }
 
-form button {
+form button, form .button {
     width: 100%;
 }
 
 /*---------- BUTTONS -------------------------------------------------------- */
 
-button {
+button, .button {
     border: none; /* overwrite webkit default button border */
     background-color: $brandColor1;
     color: white;
@@ -101,6 +101,14 @@ button {
         /* overwrite webkit default input focus outline */
         outline: 2px solid white;
         outline-offset: 0px;
+    }
+
+    &.button_create {
+        background-color: $createButtonColor;
+
+        &:active {
+            background-color: darken($createButtonColor, 5%);
+        }
     }
 }
 

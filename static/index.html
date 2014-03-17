@@ -75,7 +75,7 @@
                         <input id="title_text" name="title" type="text">
                         <label for="url_text">URL</label>
                         <input id="url_text" name="url" type="text">
-                        <button>Create Post</button>
+                        <button class="button_create">Create Post</button>
                     </form>
                 </div>
             </div>
@@ -93,8 +93,28 @@
                         <label for="username_text">Username</label>
                         <input id="username_text" name="username" type="text">
                         <label for="password_text">Password</label>
-                        <input id="password_text" name="password" type="text">
-                        <button>Login</button>
+                        <input id="password_text" name="password" type="password">
+                        <button type="submit">Login</button>
+                        <a href="#create_account_panel" class="button button_create panel_link">
+                            Create Account
+                        </a>
+                    </form>
+                </div>
+            </div>
+
+            <!-- create account panel -->
+            <div id="create_account_panel" class="panel_wrapper">
+                <div class="top_bar clearfix">
+                    <a href="#" class="back"><div class="chevron"></div></a>
+                    <h1>Create Account</h1>
+                </div>
+                <div class="padded_content_wrapper">
+                    <form name="login_form">
+                        <label for="username_text">Username</label>
+                        <input id="username_text" name="username" type="text">
+                        <label for="password_text">Password</label>
+                        <input id="password_text" name="password" type="password">
+                        <button class="button_create" type="submit">Create Account</button>
                     </form>
                 </div>
             </div>

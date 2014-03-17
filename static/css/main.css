@@ -278,7 +278,7 @@ a:link {
 
 /*---------- FORM ELEMENTS -------------------------------------------------- */
 /* line 51, ../sass/main.scss */
-input {
+input, .button {
   display: block;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -288,14 +288,14 @@ input {
   /* remove webkit default input styling */
 }
 /* line 57, ../sass/main.scss */
-input:focus {
+input:focus, .button:focus {
   /* overwrite webkit default input focus outline */
   outline: 2px solid #019bc6;
   outline-offset: 1px;
 }
 
 /* line 64, ../sass/main.scss */
-input[type=text], button {
+input[type=text], input[type=password], button, .button {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -307,7 +307,7 @@ input[type=text], button {
 }
 
 /* line 71, ../sass/main.scss */
-input[type=text] {
+input[type=text], input[type=password] {
   -webkit-box-shadow: inset 0px 2px 4px black;
   -moz-box-shadow: inset 0px 2px 4px black;
   box-shadow: inset 0px 2px 4px black;
@@ -325,31 +325,39 @@ label {
 }
 
 /* line 85, ../sass/main.scss */
-form button {
+form button, form .button {
   width: 100%;
 }
 
 /*---------- BUTTONS -------------------------------------------------------- */
 /* line 91, ../sass/main.scss */
-button {
+button, .button {
   border: none;
   /* overwrite webkit default button border */
   background-color: #019bc6;
   color: white;
 }
 /* line 96, ../sass/main.scss */
-button:active {
+button:active, .button:active {
   background-color: #0187ad;
 }
 /* line 100, ../sass/main.scss */
-button:focus {
+button:focus, .button:focus {
   /* overwrite webkit default input focus outline */
   outline: 2px solid white;
   outline-offset: 0px;
 }
+/* line 106, ../sass/main.scss */
+button.button_create, .button.button_create {
+  background-color: #008c2a;
+}
+/* line 109, ../sass/main.scss */
+button.button_create:active, .button.button_create:active {
+  background-color: #007322;
+}
 
 /*---------- TAB BAR -------------------------------------------------------- */
-/* line 109, ../sass/main.scss */
+/* line 117, ../sass/main.scss */
 #tab_bar {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -366,25 +374,25 @@ button:focus {
   z-index: 9999;
   /* force above full height panels */
 }
-/* line 122, ../sass/main.scss */
+/* line 130, ../sass/main.scss */
 #tab_bar:before, #tab_bar:after {
   content: "\0020";
   display: block;
   height: 0;
   overflow: hidden;
 }
-/* line 129, ../sass/main.scss */
+/* line 137, ../sass/main.scss */
 #tab_bar:after {
   clear: both;
 }
-/* line 133, ../sass/main.scss */
+/* line 141, ../sass/main.scss */
 #tab_bar li {
   display: inline;
   float: left;
   height: 70px;
   width: 33.33333%;
 }
-/* line 140, ../sass/main.scss */
+/* line 148, ../sass/main.scss */
 #tab_bar a {
   color: #bbbbbb;
   display: block;
@@ -399,7 +407,7 @@ button:focus {
   border-right: 1px solid #333333;
   border-left: 1px solid #333333;
 }
-/* line 156, ../sass/main.scss */
+/* line 164, ../sass/main.scss */
 #tab_bar .icon {
   height: 30px;
   width: 30px;
@@ -409,26 +417,26 @@ button:focus {
   background-color: #999999;
   pointer-events: none;
 }
-/* line 168, ../sass/main.scss */
+/* line 176, ../sass/main.scss */
 #tab_bar .tab_selected .icon {
   background-color: #019bc6;
 }
-/* line 172, ../sass/main.scss */
+/* line 180, ../sass/main.scss */
 #tab_bar li:first-child a {
   border-left: none;
 }
-/* line 176, ../sass/main.scss */
+/* line 184, ../sass/main.scss */
 #tab_bar li:last-child a {
   border-right: none;
 }
-/* line 180, ../sass/main.scss */
+/* line 188, ../sass/main.scss */
 #tab_bar .tab_selected a {
   color: #ffffff;
   background: #111111;
 }
 
 /*---------- PANELS --------------------------------------------------------- */
-/* line 188, ../sass/main.scss */
+/* line 196, ../sass/main.scss */
 #panels {
   height: 100%;
   position: relative;
@@ -436,12 +444,12 @@ button:focus {
   overflow-x: hidden;
 }
 
-/* line 196, ../sass/main.scss */
+/* line 204, ../sass/main.scss */
 #panels > div.current {
   display: block;
 }
 
-/* line 200, ../sass/main.scss */
+/* line 208, ../sass/main.scss */
 .panel_wrapper {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -455,23 +463,23 @@ button:focus {
   background-color: #333;
 }
 
-/* line 212, ../sass/main.scss */
+/* line 220, ../sass/main.scss */
 .padded_content_wrapper, .content_wrapper {
   margin-top: 42px;
   padding-bottom: 70px;
 }
 
-/* line 217, ../sass/main.scss */
+/* line 225, ../sass/main.scss */
 .padded_content_wrapper {
   padding: 20px;
 }
 
 /*---------- PANEL-SPECIFIC STYLES ------------------------------------------ */
-/* line 222, ../sass/main.scss */
+/* line 230, ../sass/main.scss */
 #login_panel {
   text-align: center;
 }
-/* line 225, ../sass/main.scss */
+/* line 233, ../sass/main.scss */
 #login_panel .app_logo {
   width: 80px;
   height: 80px;
@@ -486,7 +494,7 @@ button:focus {
 }
 
 /*---------- TOP BAR -------------------------------------------------------- */
-/* line 237, ../sass/main.scss */
+/* line 245, ../sass/main.scss */
 .top_bar {
   height: 42px;
   position: fixed;
@@ -499,13 +507,13 @@ button:focus {
    * back button (one that hasBack)
    */
 }
-/* line 247, ../sass/main.scss */
+/* line 255, ../sass/main.scss */
 .top_bar h1 {
   float: left;
   padding: 13px;
   font-weight: bold;
 }
-/* line 253, ../sass/main.scss */
+/* line 261, ../sass/main.scss */
 .top_bar .back {
   color: #aaa;
   float: left;
@@ -514,21 +522,21 @@ button:focus {
   display: none;
   border-right: 1px solid #555;
 }
-/* line 265, ../sass/main.scss */
+/* line 273, ../sass/main.scss */
 .top_bar .back.hasBack + h1 {
   border-left: 1px solid #222;
 }
 
-/* line 271, ../sass/main.scss */
+/* line 279, ../sass/main.scss */
 .chevron {
   background-image: url("../images/chevrons.png");
 }
 
-/* line 277, ../sass/main.scss */
+/* line 285, ../sass/main.scss */
 .back.hasBack {
   display: block;
 }
-/* line 281, ../sass/main.scss */
+/* line 289, ../sass/main.scss */
 .back .chevron {
   width: 15px;
   height: 24px;
@@ -541,7 +549,7 @@ button:focus {
 }
 
 /*---------- LINK POSTS ----------------------------------------------------- */
-/* line 295, ../sass/main.scss */
+/* line 303, ../sass/main.scss */
 .link_post {
   background-color: white;
   padding: 4px;
@@ -550,45 +558,45 @@ button:focus {
   /* clearfix */
 }
 
-/* line 302, ../sass/main.scss */
+/* line 310, ../sass/main.scss */
 .scoring {
   width: 20%;
   min-width: 60px;
   float: left;
   text-align: center;
 }
-/* line 308, ../sass/main.scss */
+/* line 316, ../sass/main.scss */
 .scoring div {
   text-align: center;
 }
-/* line 312, ../sass/main.scss */
+/* line 320, ../sass/main.scss */
 .scoring .upvote, .scoring .downvote {
   display: inline-block;
   width: 20px;
   height: 20px;
   background-color: #eeeeee;
 }
-/* line 319, ../sass/main.scss */
+/* line 327, ../sass/main.scss */
 .scoring .score {
   padding: 4px 0px;
   font-weight: 600;
   color: #999;
 }
 
-/* line 326, ../sass/main.scss */
+/* line 334, ../sass/main.scss */
 .post_content {
   padding: 4px;
 }
-/* line 329, ../sass/main.scss */
+/* line 337, ../sass/main.scss */
 .post_content h2 {
   font-size: 16px;
   line-height: 18px;
 }
-/* line 334, ../sass/main.scss */
+/* line 342, ../sass/main.scss */
 .post_content .post_domain {
   color: #666;
 }
-/* line 338, ../sass/main.scss */
+/* line 346, ../sass/main.scss */
 .post_content .post_info {
   font-size: 12px;
   color: #aaa;
