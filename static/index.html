@@ -26,7 +26,7 @@
                     Profile
                 </a>
             </li>
-            <li id="tab_2" class="tab_selected">
+            <li id="tab_2">
                 <a href="#feed_panel">
                     <div class="icon"></div><br>
                     Feed
@@ -42,6 +42,8 @@
 
         <!-- panels -->
         <div id="panels">
+
+            <!-- main panels -->
             <div id="profile_panel" class="panel_wrapper">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
@@ -52,7 +54,8 @@
                     <a href="#panel_1-2" class="panel_link">Panel 1-2</a>
                 </div>
             </div>
-            <div id="feed_panel" class="panel_wrapper current">
+
+            <div id="feed_panel" class="panel_wrapper">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
                     <h1>Feed</h1>
@@ -60,21 +63,39 @@
                 <div class="content_wrapper">
                 </div>
             </div>
+
             <div id="post_panel" class="panel_wrapper">
                 <div class="top_bar clearfix">
                     <a href="#" class="back"><div class="chevron"></div></a>
                     <h1>Create a new post</h1>
                 </div>
                 <div class="padded_content_wrapper">
-                    <p>
-                        <form name="new_post_form">
-                            <label for="title_text">Title</label>
-                            <input id="title_text" name="title" type="text">
-                            <label for="url_text">URL</label>
-                            <input id="url_text" name="url" type="text">
-                            <button>Create Post</button>
-                        </form>
-                    </p>
+                    <form name="new_post_form">
+                        <label for="title_text">Title</label>
+                        <input id="title_text" name="title" type="text">
+                        <label for="url_text">URL</label>
+                        <input id="url_text" name="url" type="text">
+                        <button>Create Post</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- login panel -->
+            <div id="login_panel" class="panel_wrapper current">
+                <div class="top_bar clearfix">
+                    <h1>Login</h1>
+                </div>
+                <div class="padded_content_wrapper">
+                    <div class="app_logo">
+                        
+                    </div>
+                    <form name="login_form">
+                        <label for="username_text">Username</label>
+                        <input id="username_text" name="username" type="text">
+                        <label for="password_text">Password</label>
+                        <input id="password_text" name="password" type="text">
+                        <button>Login</button>
+                    </form>
                 </div>
             </div>
 

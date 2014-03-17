@@ -58,7 +58,8 @@ $(document).ready(function(){
         //TODO: Submit data to server
     });
 
-    loadContent($("#feed_panel"));
+    //TODO: detect if user already logged in and go straight to feed?
+    loadContent($("#login_panel"));
 
 });
 
