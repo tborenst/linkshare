@@ -165,6 +165,9 @@ var linkCleanup = function(req, links){
  * - request should have fields id (for link id) and vote (1 or -1)
  * - response has a status field (401, 424, 200)
  ***/
+ 
+//TODO: Either have the server return an error for something that the user has
+//      already upvoted/downvoted, or have it return vote 0, either will work
 app.put("/link", auth.authSession, function(req, res){
 	var id = req.body.id;
 	var vote = parseInt(req.body.vote);
@@ -173,7 +176,7 @@ app.put("/link", auth.authSession, function(req, res){
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK})
+				res.status(200).send({message: constants.MSG_OK, vote: 1})
 			}
 		});
 	} else if(vote < 0){
@@ -181,7 +184,7 @@ app.put("/link", auth.authSession, function(req, res){
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK})
+				res.status(200).send({message: constants.MSG_OK, vote: -1})
 			}
 		});
 	} else {

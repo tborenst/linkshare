@@ -184,10 +184,9 @@ function voteOnLink(linkID, voteType){
         dataType: "json",
         data: data,
         success: function(response, status, jqXHR){
-            console.log(response);
             if(jqXHR.status == "200"){
-                showNotification("Link voted on");
-                //TODO: change class on upvote/downvote arrows
+                //Probably don't need to show a success message here
+                updateLinkAppearance(linkID, voteType);
             }
         },
         error: function(jqXHR, exception){
@@ -196,6 +195,38 @@ function voteOnLink(linkID, voteType){
         }
 
     });
+}
+
+//TODO: Easier way to do this?
+//TODO: Currently, it's possible for the appearance to go beyond what is allowed
+//      by the server because the server still responds OK when a user isn't
+//      allowed to upvote or downvote (because they have already)
+//      Once the server is fixed, this should all work fine
+function updateLinkAppearance(id, voteType){
+    var link = $(".link_post[data-id=" + id +"]");
+    if(link.hasClass("upvoted")){
+        if (voteType < 0){
+            link.removeClass("upvoted");
+        }
+    } else if (link.hasClass("downvoted")){
+        if (voteType > 0){
+            link.removeClass("downvoted")
+        }
+    } else {
+        if (voteType < 0){
+            link.addClass("downvoted");
+        } else if (voteType > 0){
+            link.addClass("upvoted");
+        }
+    }
+
+    updateLinkScoreAppearance(link, voteType);
+}
+
+function updateLinkScoreAppearance(link, delta){
+    var currentScore = parseInt($(".score", link).html());
+    var newScore = currentScore + delta;
+    $(".score", link).html(newScore);
 }
 
 function transition(toPanel, type, reverse) {
@@ -271,7 +302,6 @@ function loadContentForPanel(nextPanel){
                 success: function(response, status, jqXHR){
                     if(jqXHR.status == "200"){
                         // Probably don't need to show success message here
-                        console.log(response.links);
                         html = getHTML("link_posts_template", response.links);
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);
