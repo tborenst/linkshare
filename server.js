@@ -21,7 +21,9 @@ app.configure(function(){
 
 /* ---------- ROUTES -------------------------------------------------------- */
 
-// AUTH + USER ROUTES
+//====================//
+// AUTH + USER ROUTES //
+//====================//
 
 /**
  * Register Route:
@@ -76,8 +78,16 @@ app.delete("/session", function(req, res){
 	res.status(200).send({message: constants.MSG_OK});
 });
 
-// LINK ROUTES
+//=============//
+// LINK ROUTES //
+//=============//
 
+/**
+ * Post Link Route:
+ * Posts a new link on behalf of the logged in user (login required).
+ * - request should include "url", "title", and "location" fields
+ * - response has a status field (401, 424, 200)
+ ***/
 app.post("/link", auth.authSession, function(req, res){
 	var username = req.user.username;
 	var url = req.body.url;
@@ -92,32 +102,65 @@ app.post("/link", auth.authSession, function(req, res){
 	});
 });
 
-// update one item
-app.put("/todo/:id", function(req, res){
-  // change todo at index, to the new todo
-  var id = request.params.id;
-  var todo = { "desc": request.body.desc,
-               "completed": JSON.parse(request.body.completed) };
-  todoList[id] = todo;
-  writeFile("data.txt", JSON.stringify(todoList));
-  response.send({
-    todoList: todoList,
-    success: true
-  });
-});
-
+/**
+ * Get Links Route:
+ * Returns an array of the N top links. 
+ * - request should include "num" field to specify a max number of links
+ * Each object in the array has the form:
+ * {username, url, location, date, score, vote}
+ * - username: username of the link poster
+ * - url: url of the link
+ * - location: string describing the location the link was posted from
+ * - date: string describing time/date (server time) when the link was posted
+ * - score: #upvotes - #downvotes
+ * - vote: 1 if the user has upvoted this link, -1 if the user has downvoted 
+ *   this link, and 0 otherwise or if the user is not logged in
+ ***/
 app.get("/link", function(req, res){
 	var num = parseInt(req.query.num);
 	database.getTopNLinks(num, function(error, results){
 		if(error){
 			res.status(424).send({message: constants.MSG_INTERNAL});
 		} else {
+			results = linkCleanup(req, results);
 			res.status(200).send({message: constants.MSG_OK, links: results});
 		}
 	});
 });
 
-// DEBUGGING ROUTES
+/**
+ * linkCleanup:
+ * Helper method for the GET "/link" route which cleans the link results from
+ * the database and prepares them for the client.
+ ***/
+var linkCleanup = function(req, links){
+	for(var i = 0; i < links.length; i++){
+		var link = links[i];
+		var upvotes = link.upvotes;
+		var downvotes = link.downvotes;
+		// prep link
+		delete link.upvotes;
+		delete link.downvotes;
+		delete link._id;
+		link.vote = 0;
+		// calculate vote
+		if(req.user){
+			var username = req.user.username;
+			if(upvotes.indexOf(username) !== -1){
+				link.vote += 1;
+			} else if(downvotes.indexOf(username) !== -1){
+				link.vote -= 1;
+			}
+		}
+		// save link in results
+		links[i] = link;
+	}
+	return links;
+}
+
+//==================//
+// DEBUGGING ROUTES //
+//==================//
 
 // user info (debugging)
 app.get("/user", auth.authSession, function(req, res){
@@ -129,7 +172,9 @@ app.get("/debug", function(req, res){
 	res.sendfile("static/debugging.html");
 });
 
-// OTHER ROUTES
+//==============//
+// OTHER ROUTES //
+//==============//
 
 // Home Route
 app.get('/', function(req, res) {
