@@ -117,6 +117,29 @@ $(document).ready(function(){
         });
     });
 
+    $(".logout_link").on("click", function(e){
+        e.preventDefault();
+        
+        $.ajax({
+            type: "DELETE",
+            url: "/session",
+            dataTabe: "json",
+            success: function(response, status, jqXHR){
+                if(jqXHR.status == "200"){
+                    showNotification("Logged out successfully!");
+                    visits.clear();
+                    hideTabBar();
+                    loadContentForPanel($("#login_panel"));
+                    transition($("#login_panel"), "crossfade");
+                }
+            },
+            error: function(jqXHR, exception){
+                var errorMsg = $.parseJSON(jqXHR.responseText).message;
+                showNotification(errorMsg, "bad");
+            }
+        })
+    })
+
 
     //TODO: detect if user already logged in and go straight to feed?
     loadContentForPanel($("#login_panel"));
