@@ -24,6 +24,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         var nextPanel = $(e.target.hash);
+        loadContentForPanel(nextPanel);
         transition(nextPanel, "push");
     });
 
@@ -33,6 +34,7 @@ $(document).ready(function(){
         e.preventDefault();
         var lastPanel = visits.back();
         if(lastPanel) {
+            //TODO: Load content for panel here?
             transition(lastPanel, "push", true);
         }
     });
@@ -50,7 +52,6 @@ $(document).ready(function(){
             dataType: "json",
             success: function(response, statusText, jqXHR){
                 if(jqXHR.status == "200"){
-                    console.log(response);
                     showNotification("Link posted!");
                     form.clearForm();
                     visits.clear();
@@ -60,7 +61,6 @@ $(document).ready(function(){
             },
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                console.log(errorMsg);
                 showNotification(errorMsg, "bad");
             }
         });
@@ -78,7 +78,6 @@ $(document).ready(function(){
             dataType: "json",
             success: function(response, statusText, jqXHR){
                 if(jqXHR.status == "200"){
-                    console.log(response);
                     showNotification("Account created!");
                     //TODO: Auto-login and go to feed panel instead?
                     transition($("#login_panel"), "push", true);
@@ -86,7 +85,6 @@ $(document).ready(function(){
             },
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                console.log(errorMsg);
                 showNotification(errorMsg, "bad"); 
             }
         });
@@ -105,7 +103,6 @@ $(document).ready(function(){
             success: function(response, status, jqXHR){
                 console.log(jqXHR);
                 if(jqXHR.status == "200"){
-                    console.log(response.message);
                     showNotification("Logged in successfully!")
                     visits.clear();
                     showTabBar();
@@ -115,11 +112,10 @@ $(document).ready(function(){
             },
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                console.log(errorMsg);
                 showNotification(errorMsg, "bad");
             }
         });
-    })
+    });
 
 
     //TODO: detect if user already logged in and go straight to feed?
@@ -228,6 +224,7 @@ function hideTabBar(){
     $("#tab_bar").removeClass("tab_bar_show");
 }
 
+/* ---------- HISTORY ------------------------------------------------------- */
 
 var visits = {
     history: [],
@@ -274,15 +271,6 @@ function getHTML(templateID, context){
     return html;
 }
 
-/* ---------- DATA ---------------------------------------------------------- */
-
-/* SAMPLE DATA FOR FRONT-END TESTING, NOT INTENDED FOR PRODUCTION USE */
-
-var LinkShare = {
-    posts: [
-    ]
-};
-
 /* ---------- OTHER UTILS --------------------------------------------------- */
 
 /* Given a form object, returns a stringified JSON object of all form elements
@@ -302,6 +290,7 @@ var LinkShare = {
     }
 }(jQuery));
 
+/* Given a form object, iterates through all it's elements, and clears them */
 (function ($) {
     jQuery.fn.clearForm = function(){
         var form = this[0];
