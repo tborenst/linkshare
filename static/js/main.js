@@ -55,7 +55,6 @@ $(document).ready(function(){
     $("form[name=new_post_form]").submit(function(e){
         e.preventDefault();
         var data = $(this).jsonSerializeForm();
-        //TODO: Submit data to server
     });
 
     $("form[name=create_account_form]").submit(function(e){
@@ -68,21 +67,50 @@ $(document).ready(function(){
             contentType: "application/json",
             data: data,
             dataType: "json",
-            success: function(response, status){
-                if(status = "200"){
-                    console.log(response.message);
+            success: function(response, statusText, jqXHR){
+                if(jqXHR.status == "200"){
+                    console.log(response);
                     //TODO: Show success message
                     //TODO: Either login and go to feed panel or transition
                     //      to login panel
                 }
             },
-            error: function(jqXHR, exception) {
+            error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
                 console.log(errorMsg);
                 //TODO: Show error message 
             }
         });
     });
+
+    $("form[name=login_form]").submit(function(e){
+        e.preventDefault();
+        var data = $(this).jsonSerializeForm();
+
+        $.ajax({
+            type: "POST",
+            url: "/session",
+            contentType: "application/json",
+            data: data,
+            dataType: "json",
+            success: function(response, status, jqXHR){
+                console.log(jqXHR);
+                if(jqXHR.status == "200"){
+                    console.log(response.message);
+                    //TODO: Show success message
+                    visits.clear();
+                    loadContent($("#feed_panel"));
+                    transition($("#feed_panel"), "crossfade");
+                }
+            },
+            error: function(jqXHR, exception){
+                var errorMsg = $.parseJSON(jqXHR.responseText).message;
+                console.log(errorMsg);
+                //TODO: Show error message
+            }
+        });
+    })
+
 
     //TODO: detect if user already logged in and go straight to feed?
     loadContent($("#login_panel"));
