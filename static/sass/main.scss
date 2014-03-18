@@ -121,11 +121,14 @@ button, .button {
     border-top: 1px solid #111111;
 
     position: fixed;
-    bottom: 0;
+    bottom: -200px;
     left: 0;
     right: 0;
     zoom: 1; /* hasLayout fix */
     z-index: 9999; /* force above full height panels */
+
+    @include transform(translate3d(0,0,0)); /* force hardware acceleration */
+    @include transition(all .5s);
 
     &:before, &:after {
         content: "\0020";
@@ -136,6 +139,10 @@ button, .button {
 
     &:after {
         clear: both;
+    }
+
+    &.tab_bar_show {
+        bottom: 0;
     }
 
     li {

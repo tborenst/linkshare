@@ -108,6 +108,7 @@ $(document).ready(function(){
                     console.log(response.message);
                     showNotification("Logged in successfully!")
                     visits.clear();
+                    showTabBar();
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
@@ -217,6 +218,14 @@ function loadContentForPanel(nextPanel){
         default:
             console.log("no data to load");
     }
+}
+
+function showTabBar(){
+    $("#tab_bar").addClass("tab_bar_show");
+}
+
+function hideTabBar(){
+    $("#tab_bar").removeClass("tab_bar_show");
 }
 
 
