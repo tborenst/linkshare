@@ -15,6 +15,10 @@ $(document).ready(function(){
         /* reset visit history on new tab */
         visits.clear();
 
+        //TODO: Move this into the transition function so that these
+        //      classes change properly when just calling transition
+        //      and not actually clicking the tab
+
         /* not yet sure if ill need this for styling reasons */
         $("#tab_bar").attr("class", e.target.hash.slice(1));
 
@@ -29,7 +33,7 @@ $(document).ready(function(){
         var nextPanel = $(e.target.hash);
 
         /* fetch data for whatever page we're loading */
-        loadContent(nextPanel);
+        loadContentForPanel(nextPanel);
 
         transition(nextPanel, "crossfade");
     });
@@ -99,7 +103,7 @@ $(document).ready(function(){
                     console.log(response.message);
                     //TODO: Show success message
                     visits.clear();
-                    loadContent($("#feed_panel"));
+                    loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
             },
@@ -113,7 +117,7 @@ $(document).ready(function(){
 
 
     //TODO: detect if user already logged in and go straight to feed?
-    loadContent($("#login_panel"));
+    loadContentForPanel($("#login_panel"));
     visits.add($("#login_panel"));
 
 });
@@ -150,7 +154,7 @@ function transition(toPanel, type, reverse) {
 }
 
 /* a load function to simulate responses from a server */
-function loadContent(nextPanel){
+function loadContentForPanel(nextPanel){
     var panelToLoad = nextPanel.attr("id");
     var loadTarget;
     var content;
@@ -205,111 +209,7 @@ function getHTML(templateID, context){
 /* SAMPLE DATA FOR FRONT-END TESTING, NOT INTENDED FOR PRODUCTION USE */
 
 var LinkShare = {
-    posts: [{
-        title: "Bouncer fights off gunman",
-        url: "i.imgur.com",
-        dateStr: "10:24 PM",
-        username: "tomer",
-        score: 4178
-    },
-    {
-        title: "GTA IV with mods... super photo-realistic",
-        url: "i.imgur.com",
-        dateStr: "10:17 PM",
-        username: "HuntingPandas",
-        score: 2186
-    },
-    {
-        title: "The cutest puppy came in my work last night.",
-        url: "i.imgur.com",
-        dateStr: "8:45 PM",
-        username: "t",
-        score: 278
-    },
-    {
-        title: "Bouncer fights off gunman",
-        url: "i.imgur.com",
-        dateStr: "10:24 PM",
-        username: "tomer",
-        score: 4178
-    },
-    {
-        title: "GTA IV with mods... super photo-realistic",
-        url: "i.imgur.com",
-        dateStr: "10:17 PM",
-        username: "HuntingPandas",
-        score: 2186
-    },
-    {
-        title: "The cutest puppy came in my work last night.",
-        url: "i.imgur.com",
-        dateStr: "8:45 PM",
-        username: "t",
-        score: 278
-    },
-    {
-        title: "Bouncer fights off gunman",
-        url: "i.imgur.com",
-        dateStr: "10:24 PM",
-        username: "tomer",
-        score: 4178
-    },
-    {
-        title: "GTA IV with mods... super photo-realistic",
-        url: "i.imgur.com",
-        dateStr: "10:17 PM",
-        username: "HuntingPandas",
-        score: 2186
-    },
-    {
-        title: "The cutest puppy came in my work last night.",
-        url: "i.imgur.com",
-        dateStr: "8:45 PM",
-        username: "t",
-        score: 278
-    },
-    {
-        title: "Bouncer fights off gunman",
-        url: "i.imgur.com",
-        dateStr: "10:24 PM",
-        username: "tomer",
-        score: 4178
-    },
-    {
-        title: "GTA IV with mods... super photo-realistic",
-        url: "i.imgur.com",
-        dateStr: "10:17 PM",
-        username: "HuntingPandas",
-        score: 2186
-    },
-    {
-        title: "The cutest puppy came in my work last night.",
-        url: "i.imgur.com",
-        dateStr: "8:45 PM",
-        username: "t",
-        score: 278
-    },
-    {
-        title: "Bouncer fights off gunman",
-        url: "i.imgur.com",
-        dateStr: "10:24 PM",
-        username: "tomer",
-        score: 4178
-    },
-    {
-        title: "GTA IV with mods... super photo-realistic",
-        url: "i.imgur.com",
-        dateStr: "10:17 PM",
-        username: "HuntingPandas",
-        score: 2186
-    },
-    {
-        title: "The cutest puppy came in my work last night.",
-        url: "i.imgur.com",
-        dateStr: "8:45 PM",
-        username: "t",
-        score: 278
-    },
+    posts: [
     ]
 };
 
