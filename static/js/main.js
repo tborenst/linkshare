@@ -58,7 +58,8 @@ $(document).ready(function(){
 
     $("form[name=new_post_form]").submit(function(e){
         e.preventDefault();
-        var data = $(this).jsonSerializeForm();
+        var form = $(this);
+        var data = form.jsonSerializeForm();
 
         $.ajax({
             type: "POST",
@@ -70,7 +71,7 @@ $(document).ready(function(){
                 if(jqXHR.status == "200"){
                     console.log(response);
                     //TODO: Show success message
-                    //TODO: Clear form
+                    form.clearForm();
                     visits.clear();
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
@@ -269,5 +270,15 @@ var LinkShare = {
             }
         });
         return JSON.stringify(obj);
+    }
+}(jQuery));
+
+(function ($) {
+    jQuery.fn.clearForm = function(){
+        var form = this[0];
+        $(form.elements).each(function(){
+            $(this).val("");
+        });
+        return $(form);
     }
 }(jQuery));
