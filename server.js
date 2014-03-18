@@ -106,6 +106,7 @@ app.post("/link", auth.authSession, function(req, res){
  * Get Links Route:
  * Returns an array of the N top links. 
  * - request should include "num" field to specify a max number of links
+ * - response has status field (424, 200)
  * Each object in the array has the form:
  * {username, url, location, date, score, vote}
  * - username: username of the link poster
@@ -157,6 +158,36 @@ var linkCleanup = function(req, links){
 	}
 	return links;
 }
+
+/**
+ * Upvote/Downvote Link Route:
+ * Lets a logged in user upvote or downvote a particular link (login required).
+ * - request should have fields id (for link id) and vote (1 or -1)
+ * - response has a status field (401, 424, 200)
+ ***/
+app.put("/link", auth.authSession, function(req, res){
+	var id = req.body.id;
+	var vote = parseInt(req.body.vote);
+	if(vote > 0){
+		database.upvoteLink(id, req.user.username, function(error){
+			if(error){
+				res.status(424).send({message: constants.MSG_INTERNAL});
+			} else {
+				res.status(200).send({message: constants.MSG_OK})
+			}
+		});
+	} else if(vote < 0){
+		database.downvoteLink(id, req.user.username, function(error){
+			if(error){
+				res.status(424).send({message: constants.MSG_INTERNAL});
+			} else {
+				res.status(200).send({message: constants.MSG_OK})
+			}
+		});
+	} else {
+		res.status(200).send({message: constants.MSG_OK})
+	}
+});
 
 //==================//
 // DEBUGGING ROUTES //
