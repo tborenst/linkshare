@@ -59,6 +59,29 @@ $(document).ready(function(){
     $("form[name=new_post_form]").submit(function(e){
         e.preventDefault();
         var data = $(this).jsonSerializeForm();
+
+        $.ajax({
+            type: "POST",
+            url: "/link",
+            contentType: "application/json",
+            data: data,
+            dataType: "json",
+            success: function(response, statusText, jqXHR){
+                if(jqXHR.status == "200"){
+                    console.log(response);
+                    //TODO: Show success message
+                    //TODO: Clear form
+                    visits.clear();
+                    loadContentForPanel($("#feed_panel"));
+                    transition($("#feed_panel"), "crossfade");
+                }
+            },
+            error: function(jqXHR, exception){
+                var errorMsg = $.parseJSON(jqXHR.responseText).message;
+                console.log(errorMsg);
+                //TODO: Show error message;
+            }
+        });
     });
 
     $("form[name=create_account_form]").submit(function(e){
