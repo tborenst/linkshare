@@ -163,32 +163,41 @@ var linkCleanup = function(req, links){
  * Upvote/Downvote Link Route:
  * Lets a logged in user upvote or downvote a particular link (login required).
  * - request should have fields id (for link id) and vote (1 or -1)
- * - response has a status field (401, 424, 200)
+ * - response has a status field (401, 424, 200) and the following format:
+ *   {message, vote}, where vote is +1 if the user successfuly upvotes, -1 if 
+ *   the user successfuly downvotes, and 0 if the user is trying to cast the
+ *   same vote more than once
  ***/
  
-//TODO: Either have the server return an error for something that the user has
-//      already upvoted/downvoted, or have it return vote 0, either will work
 app.put("/link", auth.authSession, function(req, res){
 	var id = req.body.id;
 	var vote = parseInt(req.body.vote);
 	if(vote > 0){
-		database.upvoteLink(id, req.user.username, function(error){
+		database.upvoteLink(id, req.user.username, function(error, again){
+			var userVote = 1;
+			if(again === true){
+				userVote = 0;
+			}
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK, vote: 1})
+				res.status(200).send({message: constants.MSG_OK, vote: userVote});
 			}
 		});
 	} else if(vote < 0){
-		database.downvoteLink(id, req.user.username, function(error){
+		database.downvoteLink(id, req.user.username, function(error, again){
+			var userVote = -1;
+			if(again === true){
+				userVote = 0;
+			}
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK, vote: -1})
+				res.status(200).send({message: constants.MSG_OK, vote: userVote});
 			}
 		});
 	} else {
-		res.status(200).send({message: constants.MSG_OK})
+		res.status(200).send({message: constants.MSG_OK, vote: 0})
 	}
 });
 

@@ -308,8 +308,9 @@ var getTopNLinks = function(n, callback){
  * Move username from downvote list to upvote list (if user downvoted link) or
  * insert username into upvote list (if user not downvoted link before). Compute
  * new score of the link.
- * - callback takes arguments (error)
+ * - callback takes arguments (error, again)
  * - error will be null operation is successful
+ * - again is bool: true if user tries to upvote something previously upvoted
  ***/
 var upvoteLink = function(linkId, username, callback){
     findLink(linkId, function(error, linkObject){
@@ -321,7 +322,7 @@ var upvoteLink = function(linkId, username, callback){
             var downvotes = linkObject.downvotes;
             if(upvotes.indexOf(username) !== -1){
                 // user already upvoted
-                callback(null);
+                callback(null, true);
                 return;
             } else if(downvotes.indexOf(username) !== -1){
                 // move user from downvote to upvote
@@ -339,13 +340,13 @@ var upvoteLink = function(linkId, username, callback){
             // save object in the links collection
             getCollection(constants.DB_LINKS, function(error, collection){
                 if(error){
-                    callback(constants.ERR_INTERNAL);
+                    callback(constants.ERR_INTERNAL, false);
                 } else {
                     collection.save(linkObject, {safe: true}, function(error){
                         if(error){
-                            callback(constants.ERR_INTERNAL);
+                            callback(constants.ERR_INTERNAL, false);
                         } else {
-                            callback(null);
+                            callback(null, false);
                         }
                     });
                 }
@@ -359,8 +360,9 @@ var upvoteLink = function(linkId, username, callback){
  * Move username from upvote list to downvote list (if user upvoted link) or
  * insert username into downvoted list (if user not upvoted link before). 
  * Compute new score of the link.
- * - callback takes arguments (error)
+ * - callback takes arguments (error, again)
  * - error will be null operation is successful
+ * - again is bool: true if user tries to downvote something previously downvoted
  ***/
 var downvoteLink = function(linkId, username, callback){
     findLink(linkId, function(error, linkObject){
@@ -372,7 +374,7 @@ var downvoteLink = function(linkId, username, callback){
             var downvotes = linkObject.downvotes;
             if(downvotes.indexOf(username) !== -1){
                 // user already downvoted
-                callback(null);
+                callback(null, true);
                 return;
             } else if(upvotes.indexOf(username) !== -1){
                 // move user from upvote to downvote
@@ -390,13 +392,13 @@ var downvoteLink = function(linkId, username, callback){
             // save object in the links collection
             getCollection(constants.DB_LINKS, function(error, collection){
                 if(error){
-                    callback(constants.ERR_INTERNAL);
+                    callback(constants.ERR_INTERNAL, false);
                 } else {
                     collection.save(linkObject, {safe: true}, function(error){
                         if(error){
-                            callback(constants.ERR_INTERNAL);
+                            callback(constants.ERR_INTERNAL, false);
                         } else {
-                            callback(null);
+                            callback(null, false);
                         }
                     });
                 }
