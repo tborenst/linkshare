@@ -601,3 +601,40 @@ button.button_create:active, .button.button_create:active {
   font-size: 12px;
   color: #aaa;
 }
+
+/*---------- NOTIFICATIONS -------------------------------------------------- */
+/* line 355, ../sass/main.scss */
+.notif {
+  position: fixed;
+  top: -60px;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  line-height: 1.3;
+  /* force hardware acceleration */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+/* line 372, ../sass/main.scss */
+.notif.notif_good {
+  background: #008c2a;
+}
+/* line 376, ../sass/main.scss */
+.notif.notif_bad {
+  background: #ff2300;
+}
+/* line 380, ../sass/main.scss */
+.notif.show_notif {
+  top: 0px;
+}

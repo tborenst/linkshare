@@ -51,7 +51,7 @@ $(document).ready(function(){
             success: function(response, statusText, jqXHR){
                 if(jqXHR.status == "200"){
                     console.log(response);
-                    //TODO: Show success message
+                    showNotification("Link posted!");
                     form.clearForm();
                     visits.clear();
                     loadContentForPanel($("#feed_panel"));
@@ -61,7 +61,7 @@ $(document).ready(function(){
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
                 console.log(errorMsg);
-                //TODO: Show error message;
+                showNotification(errorMsg, "bad");
             }
         });
     });
@@ -79,7 +79,7 @@ $(document).ready(function(){
             success: function(response, statusText, jqXHR){
                 if(jqXHR.status == "200"){
                     console.log(response);
-                    //TODO: Show success message
+                    showNotification("Account created!");
                     //TODO: Either login and go to feed panel or transition
                     //      to login panel
                 }
@@ -87,7 +87,7 @@ $(document).ready(function(){
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
                 console.log(errorMsg);
-                //TODO: Show error message 
+                showNotification(errorMsg, "bad"); 
             }
         });
     });
@@ -106,7 +106,7 @@ $(document).ready(function(){
                 console.log(jqXHR);
                 if(jqXHR.status == "200"){
                     console.log(response.message);
-                    //TODO: Show success message
+                    showNotification("Logged in successfully!")
                     visits.clear();
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
@@ -115,7 +115,7 @@ $(document).ready(function(){
             error: function(jqXHR, exception){
                 var errorMsg = $.parseJSON(jqXHR.responseText).message;
                 console.log(errorMsg);
-                //TODO: Show error message
+                showNotification(errorMsg, "bad");
             }
         });
     })
@@ -238,6 +238,21 @@ var visits = {
     clear: function() {
         this.history = [];
     }
+}
+
+/* ---------- NOTIFICATIONS ------------------------------------------------- */
+
+// TODO Handle case where multiple notifications need to be queued
+function showNotification(msg, type){
+    type = type ? type : "good";
+
+    var notif = $(".notif.notif_" + type);
+    console.log(notif);
+    $(".notif_content", notif).html(msg);
+    notif.addClass("show_notif");
+    setTimeout(function(){
+        notif.removeClass("show_notif");
+    }, 3000)
 }
 
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
