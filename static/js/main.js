@@ -101,7 +101,6 @@ $(document).ready(function(){
             data: data,
             dataType: "json",
             success: function(response, status, jqXHR){
-                console.log(jqXHR);
                 if(jqXHR.status == "200"){
                     showNotification("Logged in successfully!")
                     visits.clear();
@@ -119,7 +118,7 @@ $(document).ready(function(){
 
     $(".logout_link").on("click", function(e){
         e.preventDefault();
-        
+
         $.ajax({
             type: "DELETE",
             url: "/session",
@@ -219,8 +218,7 @@ function loadContentForPanel(nextPanel){
                 data: {"num": 20 }, //TODO: Make this a parameter
                 success: function(response, status, jqXHR){
                     if(jqXHR.status == "200"){
-                        console.log(response.message);
-                        //TODO: Show success message
+                        // Probably don't need to show success message here
                         html = getHTML("link_posts_template", response.links);
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);
@@ -228,14 +226,13 @@ function loadContentForPanel(nextPanel){
                 },
                 error: function(jqXHR, exception){
                     var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                    console.log(errorMsg);
-                    //TODO: Show error message
+                    showNotification(errorMsg, "bad");
                 }
             });
 
             break;
         default:
-            console.log("no data to load");
+            console.log(panelToLoad + ": no data to load");
     }
 }
 
@@ -276,7 +273,6 @@ function showNotification(msg, type){
     type = type ? type : "good";
 
     var notif = $(".notif.notif_" + type);
-    console.log(notif);
     $(".notif_content", notif).html(msg);
     notif.addClass("show_notif");
     setTimeout(function(){
