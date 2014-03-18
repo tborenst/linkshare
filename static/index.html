@@ -139,7 +139,7 @@
         <script id="link_posts_template" type="text/x-handlebars-template">
             <ul class="link_posts">
                 {{#each this}}
-                    <li class="link_post" data-id="{{ this.linkId }}">
+                    <li class="link_post {{voteClass vote}}" data-id="{{ this.linkId }}">
                         <div class="scoring">
                             <a href="#" class="upvote"></a>
                             <div class="score">{{ this.score }}</div>

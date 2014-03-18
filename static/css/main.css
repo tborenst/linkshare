@@ -597,27 +597,37 @@ button.button_create:active, .button.button_create:active {
   color: #999;
 }
 
-/* line 341, ../sass/main.scss */
+/* line 342, ../sass/main.scss */
+.link_post.upvoted .upvote {
+  background-color: orange;
+}
+
+/* line 348, ../sass/main.scss */
+.link_post.downvoted .downvote {
+  background-color: red;
+}
+
+/* line 353, ../sass/main.scss */
 .post_content {
   padding: 4px;
 }
-/* line 344, ../sass/main.scss */
+/* line 356, ../sass/main.scss */
 .post_content h2 {
   font-size: 16px;
   line-height: 18px;
 }
-/* line 349, ../sass/main.scss */
+/* line 361, ../sass/main.scss */
 .post_content .post_domain {
   color: #666;
 }
-/* line 353, ../sass/main.scss */
+/* line 365, ../sass/main.scss */
 .post_content .post_info {
   font-size: 12px;
   color: #aaa;
 }
 
 /*---------- NOTIFICATIONS -------------------------------------------------- */
-/* line 362, ../sass/main.scss */
+/* line 374, ../sass/main.scss */
 .notif {
   position: fixed;
   top: -60px;
@@ -640,15 +650,15 @@ button.button_create:active, .button.button_create:active {
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
-/* line 379, ../sass/main.scss */
+/* line 391, ../sass/main.scss */
 .notif.notif_good {
   background: #008c2a;
 }
-/* line 383, ../sass/main.scss */
+/* line 395, ../sass/main.scss */
 .notif.notif_bad {
   background: #ff2300;
 }
-/* line 387, ../sass/main.scss */
+/* line 399, ../sass/main.scss */
 .notif.show_notif {
   top: 0px;
 }

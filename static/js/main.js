@@ -343,6 +343,19 @@ function getHTML(templateID, context){
     return html;
 }
 
+/* Given the vote attr of the link object, determines the correct class to add
+ * to the existing upvote/downvote links
+ */
+Handlebars.registerHelper('voteClass', function(vote) {
+  if(vote == 1){
+    return "upvoted"
+  } else if (vote == -1){
+    return "downvoted"
+  } else {
+    return ""
+  }
+});
+
 /* ---------- OTHER UTILS --------------------------------------------------- */
 
 /* Given a form object, returns a stringified JSON object of all form elements

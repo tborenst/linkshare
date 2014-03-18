@@ -338,6 +338,18 @@ button, .button {
     }
 }
 
+.link_post.upvoted {
+    .upvote {
+        background-color: orange;
+    }
+}
+
+.link_post.downvoted {
+    .downvote {
+        background-color: red;
+    }
+}
+
 .post_content {
     padding: 4px;
     
