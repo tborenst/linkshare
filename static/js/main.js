@@ -80,8 +80,8 @@ $(document).ready(function(){
                 if(jqXHR.status == "200"){
                     console.log(response);
                     showNotification("Account created!");
-                    //TODO: Either login and go to feed panel or transition
-                    //      to login panel
+                    //TODO: Auto-login and go to feed panel instead?
+                    transition($("#login_panel"), "push", true);
                 }
             },
             error: function(jqXHR, exception){
