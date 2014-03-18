@@ -66,6 +66,7 @@ $(document).ready(function(){
         });
     });
 
+    //TODO: This should probably be a PUT not a POST
     $("form[name=create_account_form]").submit(function(e){
         e.preventDefault();
         var data = $(this).jsonSerializeForm();
@@ -116,6 +117,7 @@ $(document).ready(function(){
         });
     });
 
+    //TODO: Change this to touchstart
     $(".logout_link").on("click", function(e){
         e.preventDefault();
 
@@ -137,7 +139,27 @@ $(document).ready(function(){
                 showNotification(errorMsg, "bad");
             }
         })
-    })
+    });
+
+    //TODO: Change this to touchstart
+    /* Need to attach this handler to the #feed_panel and have .upvote delegate
+     * to it because .upvote doesn't exist on page load
+     */
+    $("#feed_panel").on("click", ".upvote", function(e){
+        e.preventDefault();
+        var id = $(this).closest(".link_post").data().id;
+        voteOnLink(id, 1);
+    });
+
+    //TODO: Change this to touchstart
+    /* Need to attach this handler to the #feed_panel and have .downvote 
+     * delegate to it because .downvote doesn't exist on page load
+     */
+    $("#feed_panel").on("click", ".downvote", function(e){
+        e.preventDefault();
+        var id = $(this).closest(".link_post").data().id;
+        voteOnLink(id, -1);
+    });
 
 
     //TODO: detect if user already logged in and go straight to feed?
@@ -145,6 +167,36 @@ $(document).ready(function(){
     visits.add($("#login_panel"));
 
 });
+
+//TODO: This should probably be a POST, not a PUT
+function voteOnLink(linkID, voteType){
+    var obj = {
+        id: linkID,
+        vote: voteType
+    }
+
+    var data = JSON.stringify(obj);
+
+    $.ajax({
+        type: "PUT",
+        url: "/link",
+        contentType: "application/json",
+        dataType: "json",
+        data: data,
+        success: function(response, status, jqXHR){
+            console.log(response);
+            if(jqXHR.status == "200"){
+                showNotification("Link voted on");
+                //TODO: change class on upvote/downvote arrows
+            }
+        },
+        error: function(jqXHR, exception){
+            var errorMsg = $.parseJSON(jqXHR.responseText).message;
+            showNotification(errorMsg, "bad");
+        }
+
+    });
+}
 
 function transition(toPanel, type, reverse) {
     var toPanel = $(toPanel)
@@ -219,6 +271,7 @@ function loadContentForPanel(nextPanel){
                 success: function(response, status, jqXHR){
                     if(jqXHR.status == "200"){
                         // Probably don't need to show success message here
+                        console.log(response.links);
                         html = getHTML("link_posts_template", response.links);
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);

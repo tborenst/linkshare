@@ -139,11 +139,11 @@
         <script id="link_posts_template" type="text/x-handlebars-template">
             <ul class="link_posts">
                 {{#each this}}
-                    <li class="link_post">
+                    <li class="link_post" data-id="{{ this.linkId }}">
                         <div class="scoring">
-                            <div class="upvote"></div>
+                            <a href="#" class="upvote"></a>
                             <div class="score">{{ this.score }}</div>
-                            <div class="downvote"></div>
+                            <a href="#" class="downvote"></a>
                         </div>
                         <div class="post_content">
                             <h2>
