@@ -103,7 +103,7 @@ $(document).ready(function(){
             dataType: "json",
             success: function(response, status, jqXHR){
                 if(jqXHR.status == "200"){
-                    showNotification("Logged in successfully!")
+                    //Probably don't need to show a message here
                     visits.clear();
                     showTabBar();
                     loadContentForPanel($("#feed_panel"));
