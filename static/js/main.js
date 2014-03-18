@@ -12,29 +12,10 @@ $(document).ready(function(){
     $("#tab_bar a").click(function(e){
         e.preventDefault();
 
-        /* reset visit history on new tab */
-        visits.clear();
-
-        //TODO: Move this into the transition function so that these
-        //      classes change properly when just calling transition
-        //      and not actually clicking the tab
-
-        /* not yet sure if ill need this for styling reasons */
-        $("#tab_bar").attr("class", e.target.hash.slice(1));
-
-        /* remove selected class from all tabs... */
-        $("#tab_bar li").each(function(){
-            $(this).removeClass("tab_selected");
-        })
-
-        /* ..and add it back to the one that was just clicked */
-        $(e.target).parent().addClass("tab_selected");
-
         var nextPanel = $(e.target.hash);
 
         /* fetch data for whatever page we're loading */
         loadContentForPanel(nextPanel);
-
         transition(nextPanel, "crossfade");
     });
 
@@ -151,14 +132,38 @@ function transition(toPanel, type, reverse) {
     var fromPanel = $("#panels .current");
     reverse = reverse ? "reverse" : "";
 
+    /* if toPanel is already the current panel, or toPanel is same as fromPanel,
+     * don't do anything
+     */
+    if(toPanel.hasClass("current") || toPanel === fromPanel){
+        return;
+    }
+
+    /* if this panel has a tab bar button, update it */
+    if(toPanel.hasClass("tab_bar_panel")){
+        /* not yet sure if ill need this for styling reasons */
+        //$("#tab_bar").attr("class", e.target.hash.slice(1));
+
+        /* remove selected class from all tabs... */
+        $("#tab_bar li").each(function(){
+            $(this).removeClass("tab_selected");
+        })
+
+        /* ..and add it back to the one that was just clicked */
+        $("#tab_bar a[href=#" + toPanel.attr("id") + "]").parent().addClass("tab_selected");
+    }
+
+    /* if the panel wants us to clear history, clear history */
+    if(toPanel.hasClass("clear_history")){
+        /* reset visit history on new tab */
+        visits.clear();
+    }
+
+    /* add the new panel to our visit history */
     visits.add(toPanel);
 
     if(visits.hasBack()){
         toPanel.find(".back").addClass("hasBack");
-    }
-
-    if(toPanel.hasClass("current") || toPanel === fromPanel){
-        return;
     }
 
     toPanel
