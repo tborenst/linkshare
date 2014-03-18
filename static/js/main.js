@@ -157,19 +157,36 @@ function transition(toPanel, type, reverse) {
 function loadContentForPanel(nextPanel){
     var panelToLoad = nextPanel.attr("id");
     var loadTarget;
-    var content;
+    var html;
 
     switch(panelToLoad){
         case "feed_panel":
-            content = getHTML("link_posts_template", LinkShare.posts);
-            loadTarget = nextPanel.find(".content_wrapper");
+            var links;
+
+            $.ajax({
+                type: "GET",
+                url: "/link",
+                dataType: "json",
+                data: {"num": 20 }, //TODO: Make this a parameter
+                success: function(response, status, jqXHR){
+                    if(jqXHR.status == "200"){
+                        console.log(response.message);
+                        //TODO: Show success message
+                        html = getHTML("link_posts_template", response.links);
+                        loadTarget = nextPanel.find(".content_wrapper");
+                        loadTarget.html(html);
+                    }
+                },
+                error: function(jqXHR, exception){
+                    var errorMsg = $.parseJSON(jqXHR.responseText).message;
+                    console.log(errorMsg);
+                    //TODO: Show error message
+                }
+            });
+
             break;
         default:
             console.log("no data to load");
-    }
-
-    if(content){
-        $(loadTarget).html(content);
     }
 }
 
