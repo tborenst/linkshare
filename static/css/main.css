@@ -423,8 +423,8 @@ button.button_create:active, .button.button_create:active {
 }
 /* line 171, ../sass/main.scss */
 #tab_bar .icon {
-  height: 30px;
   width: 30px;
+  height: 30px;
   background: url('/images/tab_bar_icons.png?1395253954');
   background-size: 90px 60px;
   display: inline-block;
