@@ -243,7 +243,6 @@ button, .button {
         @include background(image-url("app_logo.png"));
         background-size: 100%;
         margin-bottom: 24px;
-        @include border-radius(8px);
         display: inline-block;
     }
 }
