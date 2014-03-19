@@ -7,6 +7,32 @@ if(navigator.standalone != undefined && !!!navigator.standalone){
     return;
 }
 
+$.ajaxSetup({
+    timeout: 3000, //Time in milliseconds
+    error: function(jqXHR, textStatus, errorThrown){  
+
+        /* Attempt to parse out a returned error message */
+        try {
+            var errorMsg = $.parseJSON(jqXHR.responseText).message;
+        } catch (err) {
+            // do nothing
+        }
+
+        if(errorMsg !== undefined){
+            showNotification(errorMsg, "bad");
+        } else {
+            if(textStatus == "timeout"){
+                var errorMsg = "Connection timeout";
+            } else {
+                var errorMsg = jqXHR.status + ": " + errorThrown
+            }
+
+            showNotification(errorMsg, "bad");
+        }
+
+    }
+});
+
 $(document).ready(function(){
     /* bind tab change links */
     $("#tab_bar a").click(function(e){
@@ -89,7 +115,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "/session",
+            url: "/sessioner",
             contentType: "application/json",
             data: data,
             dataType: "json",
@@ -112,7 +138,7 @@ $(document).ready(function(){
         $.ajax({
             type: "DELETE",
             url: "/session",
-            dataTabe: "json",
+            dataType: "json",
             success: function(response, status, jqXHR){
                 if(jqXHR.status == "200"){
                     showNotification("Logged out successfully!");
@@ -153,11 +179,13 @@ $(document).ready(function(){
 });
 
 //TODO: Any way to not log the error, catch it here instead?
+/*
 $(document).bind("ajaxError", function(e, jqXHR, settings, exception){
     e.preventDefault();
     var errorMsg = $.parseJSON(jqXHR.responseText).message;
     showNotification(errorMsg, "bad");
 })
+*/
 
 //TODO: This should probably be a POST, not a PUT
 function voteOnLink(linkID, voteType){
