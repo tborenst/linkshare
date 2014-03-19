@@ -185,8 +185,10 @@ function voteOnLink(linkID, voteType){
         data: data,
         success: function(response, status, jqXHR){
             if(jqXHR.status == "200"){
+                console.log("vote", response.vote);
+                console.log("score", response.score);
                 //Probably don't need to show a success message here
-                updateLinkAppearance(linkID, voteType);
+                updateLinkAppearance(linkID, response.vote, response.score);
             }
         },
         error: function(jqXHR, exception){
@@ -197,36 +199,18 @@ function voteOnLink(linkID, voteType){
     });
 }
 
-//TODO: Easier way to do this?
-//TODO: Currently, it's possible for the appearance to go beyond what is allowed
-//      by the server because the server still responds OK when a user isn't
-//      allowed to upvote or downvote (because they have already)
-//      Once the server is fixed, this should all work fine
-function updateLinkAppearance(id, voteType){
+function updateLinkAppearance(id, vote, score){
     var link = $(".link_post[data-id=" + id +"]");
-    if(link.hasClass("upvoted")){
-        if (voteType < 0){
-            link.removeClass("upvoted");
-        }
-    } else if (link.hasClass("downvoted")){
-        if (voteType > 0){
-            link.removeClass("downvoted")
-        }
-    } else {
-        if (voteType < 0){
-            link.addClass("downvoted");
-        } else if (voteType > 0){
-            link.addClass("upvoted");
-        }
+
+    link.removeClass("upvoted downvoted");
+
+    if(vote > 0){
+        link.addClass("upvoted");
+    } else if (vote < 0){
+        link.addClass("downvoted");
     }
 
-    updateLinkScoreAppearance(link, voteType);
-}
-
-function updateLinkScoreAppearance(link, delta){
-    var currentScore = parseInt($(".score", link).html());
-    var newScore = currentScore + delta;
-    $(".score", link).html(newScore);
+    $(".score", link).html(score);
 }
 
 function transition(toPanel, type, reverse) {
