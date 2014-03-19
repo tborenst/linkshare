@@ -185,8 +185,6 @@ function voteOnLink(linkID, voteType){
         data: data,
         success: function(response, status, jqXHR){
             if(jqXHR.status == "200"){
-                console.log("vote", response.vote);
-                console.log("score", response.score);
                 //Probably don't need to show a success message here
                 updateLinkAppearance(linkID, response.vote, response.score);
             }
