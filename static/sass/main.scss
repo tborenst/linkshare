@@ -266,19 +266,17 @@ button, .button {
     }
 
     .back {
-        color: #aaa;
         float: left;
-        width: 32px;
-        height: 32px;
         display: none;
-        border-right: 1px solid #555;
-    }
+        color: white;
 
-    /* only apply this left border if the h1 is directly preceded by a displayed
-     * back button (one that hasBack)
-     */
-    .back.hasBack + h1 {
-        border-left: 1px solid #222;
+        span {
+            margin-left: 6px;
+            padding: 4px 8px;
+            border: 1px solid white;
+            line-height: $topBarHeight;
+            @include border-radius(2px);
+        }
     }
 
 }
