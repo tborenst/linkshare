@@ -328,11 +328,16 @@ button, .button {
         display: inline-block;
         width: 20px;
         height: 20px;
-        background-color: #eeeeee;
+        @include background(image-url("arrows.png"));
+        background-size: 40px 40px;
+    }
+
+    .downvote {
+        background-position: 0px 20px;
     }
 
     .score {
-        padding: 4px 0px;
+        padding: 2px 0px 4px 0px;
         font-weight: 600;
         color: #999;
     }
@@ -340,13 +345,21 @@ button, .button {
 
 .link_post.upvoted {
     .upvote {
-        background-color: orange;
+        background-position: 20px 0px;
+    }
+
+    .score {
+        color: $brandColor1;
     }
 }
 
 .link_post.downvoted {
     .downvote {
-        background-color: red;
+        background-position: 20px 20px;
+    }
+
+    .score {
+        color: $notifBadColor;
     }
 }
 
