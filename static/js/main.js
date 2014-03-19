@@ -7,6 +7,11 @@ if(navigator.standalone != undefined && !!!navigator.standalone){
     return;
 }
 
+/* For devices that are touch-enabled, use touchstart instead of click, in order
+ * to get rid of 300ms delay normally associated with click on touch devices
+ */
+var clickEvent = Modernizr.touch ? "touchstart" : "click"; 
+
 $.ajaxSetup({
     timeout: 3000, //Time in milliseconds
     error: function(jqXHR, textStatus, errorThrown){  
@@ -46,7 +51,7 @@ $(document).ready(function(){
     });
 
     /* bind all other panel links */
-    $("#panels").on("click", "a.panel_link", function(e){
+    $("#panels").on(clickEvent, "a.panel_link", function(e){
         e.preventDefault();
 
         var nextPanel = $(e.target.hash);
@@ -55,7 +60,7 @@ $(document).ready(function(){
     });
 
     /* bind back button click event */
-    $("#panels").on("click", ".back", function(e){
+    $("#panels").on(clickEvent, ".back", function(e){
         /* find the last panel in history, and transition to it, if possible */
         e.preventDefault();
         var lastPanel = visits.back();
@@ -115,7 +120,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "/sessioner",
+            url: "/session",
             contentType: "application/json",
             data: data,
             dataType: "json",
@@ -132,7 +137,7 @@ $(document).ready(function(){
     });
 
     //TODO: Change this to touchstart
-    $(".logout_link").on("click", function(e){
+    $(".logout_link").on(clickEvent, function(e){
         e.preventDefault();
 
         $.ajax({
@@ -155,7 +160,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .upvote delegate
      * to it because .upvote doesn't exist on page load
      */
-    $("#feed_panel").on("click", ".upvote", function(e){
+    $("#feed_panel").on(clickEvent, ".upvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, 1);
@@ -165,7 +170,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .downvote 
      * delegate to it because .downvote doesn't exist on page load
      */
-    $("#feed_panel").on("click", ".downvote", function(e){
+    $("#feed_panel").on(clickEvent, ".downvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, -1);
