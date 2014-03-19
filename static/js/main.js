@@ -116,7 +116,8 @@ $(document).ready(function(){
 
     $("form[name=login_form]").submit(function(e){
         e.preventDefault();
-        var data = $(this).jsonSerializeForm();
+        var form = $(this);
+        var data = form.jsonSerializeForm();
 
         $.ajax({
             type: "POST",
@@ -132,6 +133,9 @@ $(document).ready(function(){
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
+            },
+            complete: function(jqXHR, statusText){
+                form.clearForm(["username"]);
             }
         });
     });
@@ -410,12 +414,17 @@ Handlebars.registerHelper('voteClass', function(vote) {
     }
 }(jQuery));
 
-/* Given a form object, iterates through all it's elements, and clears them */
+/* Given a form object, iterates through all it's elements, and clears them,
+ * provided they are not in the array of exceptions
+ */
 (function ($) {
-    jQuery.fn.clearForm = function(){
+    jQuery.fn.clearForm = function(exceptions){
         var form = this[0];
+        exceptions = exceptions instanceof Array ? exceptions : []; 
         $(form.elements).each(function(){
-            $(this).val("");
+            if(exceptions.indexOf(this.name) < 0){
+                $(this).val("");
+            }
         });
         return $(form);
     }
