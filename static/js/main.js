@@ -58,10 +58,6 @@ $(document).ready(function(){
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
             }
         });
     });
@@ -83,10 +79,6 @@ $(document).ready(function(){
                     //TODO: Auto-login and go to feed panel instead?
                     transition($("#login_panel"), "push", true);
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad"); 
             }
         });
     });
@@ -109,10 +101,6 @@ $(document).ready(function(){
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
             }
         });
     });
@@ -133,10 +121,6 @@ $(document).ready(function(){
                     loadContentForPanel($("#login_panel"));
                     transition($("#login_panel"), "crossfade");
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
             }
         })
     });
@@ -168,6 +152,13 @@ $(document).ready(function(){
 
 });
 
+//TODO: Any way to not log the error, catch it here instead?
+$(document).bind("ajaxError", function(e, jqXHR, settings, exception){
+    e.preventDefault();
+    var errorMsg = $.parseJSON(jqXHR.responseText).message;
+    showNotification(errorMsg, "bad");
+})
+
 //TODO: This should probably be a POST, not a PUT
 function voteOnLink(linkID, voteType){
     var obj = {
@@ -188,12 +179,7 @@ function voteOnLink(linkID, voteType){
                 //Probably don't need to show a success message here
                 updateLinkAppearance(linkID, response.vote, response.score);
             }
-        },
-        error: function(jqXHR, exception){
-            var errorMsg = $.parseJSON(jqXHR.responseText).message;
-            showNotification(errorMsg, "bad");
         }
-
     });
 }
 
@@ -288,10 +274,6 @@ function loadContentForPanel(nextPanel){
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);
                     }
-                },
-                error: function(jqXHR, exception){
-                    var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                    showNotification(errorMsg, "bad");
                 }
             });
 
