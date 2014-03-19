@@ -171,17 +171,27 @@ button, .button {
     .icon {
         height: 30px;
         width: 30px;
+        @include background(image-url("tab_bar_icons.png"));
+        background-size: 90px 60px;
         display: inline-block;
         margin: 5px 0 7px 0;
-        border-radius: 10px;
-
-        background-color: #999999;
-
         pointer-events:none;
+
+        &.profile_icon {
+            background-position-x: 0px;
+        }
+
+        &.feed_icon {
+            background-position-x: -30px;
+        }
+
+        &.new_post_icon {
+            background-position-x: -60px;
+        }
     }
 
     .tab_selected .icon {
-        background-color: $brandColor1;
+        background-position-y: -30px;
     }
 
     li:first-child a {
