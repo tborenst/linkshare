@@ -345,6 +345,14 @@ function showNotification(msg, type){
     }, 3000)
 }
 
+/* ---------- SPINNER ------------------------------------------------------- */
+
+$(document).bind("ajaxSend", function(){
+   $(".spinner").show();
+ }).bind("ajaxComplete", function(){
+   $(".spinner").hide();
+ });
+
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
 
 /* Helper function to compile and render a handlebars template into html */

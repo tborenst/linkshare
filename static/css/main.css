@@ -668,3 +668,16 @@ button.button_create:active, .button.button_create:active {
 .notif.show_notif {
   top: 0px;
 }
+
+/*---------- SPINNER -------------------------------------------------------- */
+/* line 413, ../sass/main.scss */
+.spinner {
+  position: absolute;
+  display: none;
+  top: 5px;
+  right: 5px;
+  width: 32px;
+  height: 32px;
+  background: url('/images/spinner.gif?1395207378');
+  background-size: 100%;
+}

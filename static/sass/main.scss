@@ -407,3 +407,16 @@ button, .button {
         top: 0px;
     }
 }
+
+/*---------- SPINNER -------------------------------------------------------- */
+
+.spinner {
+    position: absolute;
+    display: none;
+    top: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    @include background(image-url("spinner.gif"));
+    background-size: 100%;
+}
