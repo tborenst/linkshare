@@ -173,12 +173,14 @@
                 </tr>
             </table>
 
-            <h2>Top 3 Posts</h2>
-            <ul class="link_posts">
-                {{# each links}}
-                    {{>link}}
-                {{/each}}
-            </ul>
+            {{#if links.length}}
+                <h2>Top Posts</h2>
+                <ul class="link_posts">
+                    {{# each links}}
+                        {{>link}}
+                    {{/each}}
+                </ul>
+            {{/if}}
 
             <button class="logout_link" >Logout</button>
         </script>
