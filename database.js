@@ -467,7 +467,8 @@ var getUserInfo = function(username, n, callback){
                             links.push(results[i]);
                         }
                     }
-                    callback(null, {count: count, score: score, links: links});
+                    callback(null, {count: count, score: score, links: links, 
+                        username: username});
                 }
             });
         }
