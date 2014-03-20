@@ -96,7 +96,8 @@ $(document).ready(function(){
     //TODO: This should probably be a PUT not a POST
     $("form[name=create_account_form]").submit(function(e){
         e.preventDefault();
-        var data = $(this).jsonSerializeForm();
+        var form = $(this);
+        var data = form.jsonSerializeForm();
 
         $.ajax({
             type: "POST",
@@ -107,6 +108,7 @@ $(document).ready(function(){
             success: function(response, statusText, jqXHR){
                 if(jqXHR.status == "200"){
                     showNotification("Account created!");
+                    form.clearForm();
                     //TODO: Auto-login and go to feed panel instead?
                     transition($("#login_panel"), "push", true);
                 }
