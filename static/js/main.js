@@ -141,7 +141,8 @@ $(document).ready(function(){
     });
 
     //TODO: Change this to touchstart
-    $(".logout_link").on(clickEvent, function(e){
+    //TODO: Comment on event delegation here
+    $(document).on(clickEvent, ".logout_link", function(e){
         e.preventDefault();
 
         $.ajax({
@@ -164,7 +165,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .upvote delegate
      * to it because .upvote doesn't exist on page load
      */
-    $("#feed_panel").on(clickEvent, ".upvote", function(e){
+    $(document).on(clickEvent, ".upvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, 1);
@@ -174,7 +175,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .downvote 
      * delegate to it because .downvote doesn't exist on page load
      */
-    $("#feed_panel").on(clickEvent, ".downvote", function(e){
+    $(document).on(clickEvent, ".downvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, -1);
@@ -184,6 +185,9 @@ $(document).ready(function(){
     //TODO: detect if user already logged in and go straight to feed?
     loadContentForPanel($("#login_panel"));
     visits.add($("#login_panel"));
+
+    //TODO: Comment about why this is here
+    Handlebars.registerPartial("link", $("#link_template").html());
 
 });
 
@@ -309,6 +313,23 @@ function loadContentForPanel(nextPanel){
                         // Probably don't need to show success message here
                         html = getHTML("link_posts_template", response.links);
                         loadTarget = nextPanel.find(".content_wrapper");
+                        loadTarget.html(html);
+                    }
+                }
+            });
+
+            break;
+        case "profile_panel":
+            $.ajax({
+                type: "GET",
+                url: "/user",
+                dataType: "json",
+                data: {"num": 3}, //TODO: Make this a parameter
+                success: function(response, status, jqXHR){
+                    if(jqXHR.status == "200"){
+                        // Probably don't need to show a success message here
+                        html = getHTML("user_profile_template", response.info);
+                        loadTarget = nextPanel.find(".padded_content_wrapper");
                         loadTarget.html(html);
                     }
                 }

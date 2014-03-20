@@ -46,9 +46,25 @@ a:link {
     -webkit-user-select: none;
 }
 
+/*---------- HEADERS -------------------------------------------------------- */
+
+h1 {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 22px;
+}
+
+h2 {
+    color: #019bc6;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+
 /*---------- FORM ELEMENTS -------------------------------------------------- */
 
-input, .button {
+input, .button, button {
     display: block;
     width: 100%;
     @include box-sizing(border-box);
@@ -110,6 +126,31 @@ button, .button {
             background-color: darken($createButtonColor, 5%);
         }
     }
+}
+
+/*---------- TABLES --------------------------------------------------------- */
+
+table {
+    width: 100%;
+    color: #ccc;
+    @include border-radius(4px);
+    overflow: hidden;
+    margin-bottom: 22px;
+}
+
+tr {
+
+    &:nth-child(odd){
+        background-color: #555;
+    }
+
+    &:nth-child(even){
+        background-color: #666;
+    }
+}
+
+td {
+    padding: 10px;
 }
 
 /*---------- TAB BAR -------------------------------------------------------- */
@@ -241,6 +282,7 @@ button, .button {
 
 .padded_content_wrapper {
     padding: 20px; 
+    padding-bottom: $tabBarHeight + 20px;
 }
 
 /*---------- PANEL-SPECIFIC STYLES ------------------------------------------ */
@@ -254,6 +296,14 @@ button, .button {
         background-size: 100%;
         margin-bottom: 24px;
         display: inline-block;
+    }
+}
+
+#profile_panel {
+    .link_posts {
+        @include border-radius(4px);
+        overflow: hidden;
+        margin-bottom: 22px;
     }
 }
 
@@ -272,6 +322,7 @@ button, .button {
     h1 {
         float: left;
         padding: 13px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -373,6 +424,8 @@ button, .button {
     h2 {
         font-size: 16px;
         line-height: 18px;
+        margin-bottom: 0px;
+        font-weight: normal;
     }
 
     .post_domain {

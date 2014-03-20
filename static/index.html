@@ -50,7 +50,6 @@
                     <h1>Your Profile</h1>
                 </div>
                 <div class="padded_content_wrapper">
-                    <button class="logout_link" >Logout</button>
                 </div>
             </div>
 
@@ -142,24 +141,53 @@
         <script id="link_posts_template" type="text/x-handlebars-template">
             <ul class="link_posts">
                 {{#each this}}
-                    <li class="link_post {{voteClass vote}}" data-id="{{ this.linkId }}">
-                        <div class="scoring">
-                            <a href="#" class="upvote"></a>
-                            <div class="score">{{ this.score }}</div>
-                            <a href="#" class="downvote"></a>
-                        </div>
-                        <div class="post_content">
-                            <h2>
-                                <a href="#">{{ this.title }}</a>
-                                <span class="post_domain">({{ this.url }})</span>
-                            </h2>
-                            <span class="post_info">submitted at {{ this.dateStr }} by {{ this.username }}</span>
-                        </div>
-                    </li>
+                    {{>link}}
                 {{else}}
                     <p>No links found :(</p>
                 {{/each}}
             </ul>
+        </script>
+
+        <script id="user_profile_template" type="text/x-handlebars-template">
+            <h1>{{ username }}</h1>
+            
+            <h2>Your Stats</h2>
+            <table>
+                <tr>
+                    <td>Link Score</td>
+                    <td>{{ score }}</td>
+                </tr>
+                <tr>
+                    <td># of Links Posted</td>
+                    <td>{{ count}}</td>
+                </tr>
+            </table>
+
+            <h2>Top 3 Posts</h2>
+            <ul class="link_posts">
+                {{# each links}}
+                    {{>link}}
+                {{/each}}
+            </ul>
+
+            <button class="logout_link" >Logout</button>
+        </script>
+
+        <script id="link_template" type="text/x-handlebars-template">
+            <li class="link_post {{voteClass vote}}" data-id="{{ this.linkId }}">
+                <div class="scoring">
+                    <a href="#" class="upvote"></a>
+                    <div class="score">{{ this.score }}</div>
+                    <a href="#" class="downvote"></a>
+                </div>
+                <div class="post_content">
+                    <h2>
+                        <a href="#">{{ this.title }}</a>
+                        <span class="post_domain">({{ this.url }})</span>
+                    </h2>
+                    <span class="post_info">submitted at {{ this.dateStr }} by {{ this.username }}</span>
+                </div>
+            </li>
         </script>
 
     </body>
