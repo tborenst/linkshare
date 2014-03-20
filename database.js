@@ -305,12 +305,13 @@ var getTopNLinks = function(n, callback){
 
 /**
  * upvoteLink:
- * Move username from downvote list to upvote list (if user downvoted link) or
- * insert username into upvote list (if user not downvoted link before). Compute
- * new score of the link.
- * - callback takes arguments (error, again)
- * - error will be null operation is successful
- * - again is bool: true if user tries to upvote something previously upvoted
+ * If user hasn't voted before, add them to the upvote list. If they've
+ * previously downvoted, remove them from the downvote list so they now have a
+ * neutral impact. If they've already upvoted, do nothing. Compute new score of 
+ * the link.
+ * - callback takes arguments (error, userVote, newScore)
+ * - userVote is the users current standing with the link (1, 0, or -1)
+ * - newScore is the score after the upvote operation has been run
  ***/
 var upvoteLink = function(linkId, username, callback){
     findLink(linkId, function(error, linkObject){
@@ -320,18 +321,23 @@ var upvoteLink = function(linkId, username, callback){
             // update upvote and downvote lists
             var upvotes = linkObject.upvotes;
             var downvotes = linkObject.downvotes;
+
+            // users vote on the link (-1, 0, 1);
+            var userVote;
+
             if(upvotes.indexOf(username) !== -1){
                 // user already upvoted
-                callback(null, true);
+                callback(null, 1, linkObject.score);
                 return;
             } else if(downvotes.indexOf(username) !== -1){
-                // move user from downvote to upvote
+                // user already downvoted
                 var userIndex = downvotes.indexOf(username);
-                downvotes.splice(userIndex, 1);
-                upvotes.push(username);
+                downvotes.splice(userIndex, 1); // user vote now neutral
+                userVote = 0;
             } else {
-                // user upvotes for the first time
+                // user has neither upvoted or downvoted already
                 upvotes.push(username);
+                userVote = 1;
             }
             // update object
             linkObject.upvotes = upvotes;
@@ -340,13 +346,13 @@ var upvoteLink = function(linkId, username, callback){
             // save object in the links collection
             getCollection(constants.DB_LINKS, function(error, collection){
                 if(error){
-                    callback(constants.ERR_INTERNAL, false);
+                    callback(constants.ERR_INTERNAL, userVote, linkObject.score);
                 } else {
                     collection.save(linkObject, {safe: true}, function(error){
                         if(error){
-                            callback(constants.ERR_INTERNAL, false);
+                            callback(constants.ERR_INTERNAL, userVote, linkObject.score);
                         } else {
-                            callback(null, false);
+                            callback(null, userVote, linkObject.score);
                         }
                     });
                 }
@@ -357,12 +363,13 @@ var upvoteLink = function(linkId, username, callback){
 
 /**
  * downvoteLink:
- * Move username from upvote list to downvote list (if user upvoted link) or
- * insert username into downvoted list (if user not upvoted link before). 
- * Compute new score of the link.
- * - callback takes arguments (error, again)
- * - error will be null operation is successful
- * - again is bool: true if user tries to downvote something previously downvoted
+ * If user hasn't voted before, add them to the downvote list. If they've
+ * previously upvoted, remove them from the upvote list so they now have a
+ * neutral impact. If they've already downvoted, do nothing. Compute new score of 
+ * the link.
+ * - callback takes arguments (error, userVote, newScore)
+ * - userVote is the users current standing with the link (1, 0, or -1)
+ * - newScore is the score after the upvote operation has been run
  ***/
 var downvoteLink = function(linkId, username, callback){
     findLink(linkId, function(error, linkObject){
@@ -372,18 +379,23 @@ var downvoteLink = function(linkId, username, callback){
             // update upvote and downvote lists
             var upvotes = linkObject.upvotes;
             var downvotes = linkObject.downvotes;
+
+            // users vote on the link (-1, 0, 1);
+            var userVote;
+
             if(downvotes.indexOf(username) !== -1){
                 // user already downvoted
-                callback(null, true);
+                callback(null, -1, linkObject.score);
                 return;
             } else if(upvotes.indexOf(username) !== -1){
-                // move user from upvote to downvote
+                // user already upvoted
                 var userIndex = upvotes.indexOf(username);
-                upvotes.splice(userIndex, 1);
-                downvotes.push(username);
+                upvotes.splice(userIndex, 1); // user vote now neutral
+                userVote = 0;
             } else {
-                // user downvotes for the first time
+                // user has neither upvoted or downvoted already
                 downvotes.push(username);
+                userVote = -1;
             }
             // update object
             linkObject.upvotes = upvotes;
@@ -392,13 +404,13 @@ var downvoteLink = function(linkId, username, callback){
             // save object in the links collection
             getCollection(constants.DB_LINKS, function(error, collection){
                 if(error){
-                    callback(constants.ERR_INTERNAL, false);
+                    callback(constants.ERR_INTERNAL, userVote, linkObject.score);
                 } else {
                     collection.save(linkObject, {safe: true}, function(error){
                         if(error){
-                            callback(constants.ERR_INTERNAL, false);
+                            callback(constants.ERR_INTERNAL, userVote, linkObject.score);
                         } else {
-                            callback(null, false);
+                            callback(null, userVote, linkObject.score);
                         }
                     });
                 }

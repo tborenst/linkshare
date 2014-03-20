@@ -7,6 +7,37 @@ if(navigator.standalone != undefined && !!!navigator.standalone){
     return;
 }
 
+/* For devices that are touch-enabled, use touchstart instead of click, in order
+ * to get rid of 300ms delay normally associated with click on touch devices
+ */
+var clickEvent = Modernizr.touch ? "touchstart" : "click"; 
+
+$.ajaxSetup({
+    timeout: 3000, //Time in milliseconds
+    error: function(jqXHR, textStatus, errorThrown){  
+
+        /* Attempt to parse out a returned error message */
+        try {
+            var errorMsg = $.parseJSON(jqXHR.responseText).message;
+        } catch (err) {
+            // do nothing
+        }
+
+        if(errorMsg !== undefined){
+            showNotification(errorMsg, "bad");
+        } else {
+            if(textStatus == "timeout"){
+                var errorMsg = "Connection timeout";
+            } else {
+                var errorMsg = jqXHR.status + ": " + errorThrown
+            }
+
+            showNotification(errorMsg, "bad");
+        }
+
+    }
+});
+
 $(document).ready(function(){
     /* bind tab change links */
     $("#tab_bar a").click(function(e){
@@ -20,7 +51,7 @@ $(document).ready(function(){
     });
 
     /* bind all other panel links */
-    $("#panels").on("click", "a.panel_link", function(e){
+    $("#panels").on(clickEvent, "a.panel_link", function(e){
         e.preventDefault();
 
         var nextPanel = $(e.target.hash);
@@ -29,7 +60,7 @@ $(document).ready(function(){
     });
 
     /* bind back button click event */
-    $("#panels").on("click", ".back", function(e){
+    $("#panels").on(clickEvent, ".back", function(e){
         /* find the last panel in history, and transition to it, if possible */
         e.preventDefault();
         var lastPanel = visits.back();
@@ -58,10 +89,6 @@ $(document).ready(function(){
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
             }
         });
     });
@@ -83,17 +110,14 @@ $(document).ready(function(){
                     //TODO: Auto-login and go to feed panel instead?
                     transition($("#login_panel"), "push", true);
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad"); 
             }
         });
     });
 
     $("form[name=login_form]").submit(function(e){
         e.preventDefault();
-        var data = $(this).jsonSerializeForm();
+        var form = $(this);
+        var data = form.jsonSerializeForm();
 
         $.ajax({
             type: "POST",
@@ -103,28 +127,27 @@ $(document).ready(function(){
             dataType: "json",
             success: function(response, status, jqXHR){
                 if(jqXHR.status == "200"){
-                    showNotification("Logged in successfully!")
+                    //Probably don't need to show a message here
                     visits.clear();
                     showTabBar();
                     loadContentForPanel($("#feed_panel"));
                     transition($("#feed_panel"), "crossfade");
                 }
             },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
+            complete: function(jqXHR, statusText){
+                form.clearForm(["username"]);
             }
         });
     });
 
     //TODO: Change this to touchstart
-    $(".logout_link").on("click", function(e){
+    $(".logout_link").on(clickEvent, function(e){
         e.preventDefault();
 
         $.ajax({
             type: "DELETE",
             url: "/session",
-            dataTabe: "json",
+            dataType: "json",
             success: function(response, status, jqXHR){
                 if(jqXHR.status == "200"){
                     showNotification("Logged out successfully!");
@@ -133,10 +156,6 @@ $(document).ready(function(){
                     loadContentForPanel($("#login_panel"));
                     transition($("#login_panel"), "crossfade");
                 }
-            },
-            error: function(jqXHR, exception){
-                var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                showNotification(errorMsg, "bad");
             }
         })
     });
@@ -145,7 +164,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .upvote delegate
      * to it because .upvote doesn't exist on page load
      */
-    $("#feed_panel").on("click", ".upvote", function(e){
+    $("#feed_panel").on(clickEvent, ".upvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, 1);
@@ -155,7 +174,7 @@ $(document).ready(function(){
     /* Need to attach this handler to the #feed_panel and have .downvote 
      * delegate to it because .downvote doesn't exist on page load
      */
-    $("#feed_panel").on("click", ".downvote", function(e){
+    $("#feed_panel").on(clickEvent, ".downvote", function(e){
         e.preventDefault();
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, -1);
@@ -167,6 +186,15 @@ $(document).ready(function(){
     visits.add($("#login_panel"));
 
 });
+
+//TODO: Any way to not log the error, catch it here instead?
+/*
+$(document).bind("ajaxError", function(e, jqXHR, settings, exception){
+    e.preventDefault();
+    var errorMsg = $.parseJSON(jqXHR.responseText).message;
+    showNotification(errorMsg, "bad");
+})
+*/
 
 //TODO: This should probably be a POST, not a PUT
 function voteOnLink(linkID, voteType){
@@ -186,47 +214,24 @@ function voteOnLink(linkID, voteType){
         success: function(response, status, jqXHR){
             if(jqXHR.status == "200"){
                 //Probably don't need to show a success message here
-                updateLinkAppearance(linkID, voteType);
+                updateLinkAppearance(linkID, response.vote, response.score);
             }
-        },
-        error: function(jqXHR, exception){
-            var errorMsg = $.parseJSON(jqXHR.responseText).message;
-            showNotification(errorMsg, "bad");
         }
-
     });
 }
 
-//TODO: Easier way to do this?
-//TODO: Currently, it's possible for the appearance to go beyond what is allowed
-//      by the server because the server still responds OK when a user isn't
-//      allowed to upvote or downvote (because they have already)
-//      Once the server is fixed, this should all work fine
-function updateLinkAppearance(id, voteType){
+function updateLinkAppearance(id, vote, score){
     var link = $(".link_post[data-id=" + id +"]");
-    if(link.hasClass("upvoted")){
-        if (voteType < 0){
-            link.removeClass("upvoted");
-        }
-    } else if (link.hasClass("downvoted")){
-        if (voteType > 0){
-            link.removeClass("downvoted")
-        }
-    } else {
-        if (voteType < 0){
-            link.addClass("downvoted");
-        } else if (voteType > 0){
-            link.addClass("upvoted");
-        }
+
+    link.removeClass("upvoted downvoted");
+
+    if(vote > 0){
+        link.addClass("upvoted");
+    } else if (vote < 0){
+        link.addClass("downvoted");
     }
 
-    updateLinkScoreAppearance(link, voteType);
-}
-
-function updateLinkScoreAppearance(link, delta){
-    var currentScore = parseInt($(".score", link).html());
-    var newScore = currentScore + delta;
-    $(".score", link).html(newScore);
+    $(".score", link).html(score);
 }
 
 function transition(toPanel, type, reverse) {
@@ -306,10 +311,6 @@ function loadContentForPanel(nextPanel){
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);
                     }
-                },
-                error: function(jqXHR, exception){
-                    var errorMsg = $.parseJSON(jqXHR.responseText).message;
-                    showNotification(errorMsg, "bad");
                 }
             });
 
@@ -363,6 +364,14 @@ function showNotification(msg, type){
     }, 3000)
 }
 
+/* ---------- SPINNER ------------------------------------------------------- */
+
+$(document).bind("ajaxSend", function(){
+   $(".spinner").show();
+ }).bind("ajaxComplete", function(){
+   $(".spinner").hide();
+ });
+
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
 
 /* Helper function to compile and render a handlebars template into html */
@@ -405,12 +414,17 @@ Handlebars.registerHelper('voteClass', function(vote) {
     }
 }(jQuery));
 
-/* Given a form object, iterates through all it's elements, and clears them */
+/* Given a form object, iterates through all it's elements, and clears them,
+ * provided they are not in the array of exceptions
+ */
 (function ($) {
-    jQuery.fn.clearForm = function(){
+    jQuery.fn.clearForm = function(exceptions){
         var form = this[0];
+        exceptions = exceptions instanceof Array ? exceptions : []; 
         $(form.elements).each(function(){
-            $(this).val("");
+            if(exceptions.indexOf(this.name) < 0){
+                $(this).val("");
+            }
         });
         return $(form);
     }

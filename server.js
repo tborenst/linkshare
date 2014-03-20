@@ -135,40 +135,30 @@ app.get("/link", function(req, res){
  * Lets a logged in user upvote or downvote a particular link (login required).
  * - request should have fields id (for link id) and vote (1 or -1)
  * - response has a status field (401, 424, 200) and the following format:
- *   {message, vote}, where vote is +1 if the user successfuly upvotes, -1 if 
- *   the user successfuly downvotes, and 0 if the user is trying to cast the
- *   same vote more than once
+ *   {message, vote, score}, where vote is either 1, 0, or -1 depending on what
+ *   the users current vote on the link is and score is the new score after the
+ *   the vote has been cast
  ***/
  
 app.put("/link", auth.authSession, function(req, res){
 	var id = req.body.id;
 	var vote = parseInt(req.body.vote);
 	if(vote > 0){
-		database.upvoteLink(id, req.user.username, function(error, again){
-			var userVote = 1;
-			if(again === true){
-				userVote = 0;
-			}
+		database.upvoteLink(id, req.user.username, function(error, userVote, newScore){
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK, vote: userVote});
+				res.status(200).send({message: constants.MSG_OK, vote: userVote, score: newScore});
 			}
 		});
 	} else if(vote < 0){
-		database.downvoteLink(id, req.user.username, function(error, again){
-			var userVote = -1;
-			if(again === true){
-				userVote = 0;
-			}
+		database.downvoteLink(id, req.user.username, function(error, userVote, newScore){
 			if(error){
 				res.status(424).send({message: constants.MSG_INTERNAL});
 			} else {
-				res.status(200).send({message: constants.MSG_OK, vote: userVote});
+				res.status(200).send({message: constants.MSG_OK, vote: userVote, score: newScore});
 			}
 		});
-	} else {
-		res.status(200).send({message: constants.MSG_OK, vote: 0})
 	}
 });
 

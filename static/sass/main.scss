@@ -169,19 +169,29 @@ button, .button {
     }
 
     .icon {
-        height: 30px;
-        width: 30px;
+        width: $tabBarIconWidth;
+        height: $tabBarIconHeight;
+        @include background(image-url("tab_bar_icons.png"));
+        background-size: $tabBarIconWidth * 3 $tabBarIconHeight * 2;
         display: inline-block;
         margin: 5px 0 7px 0;
-        border-radius: 10px;
-
-        background-color: #999999;
-
         pointer-events:none;
+
+        &.profile_icon {
+            background-position-x: 0px;
+        }
+
+        &.feed_icon {
+            background-position-x: -$tabBarIconWidth*1;
+        }
+
+        &.new_post_icon {
+            background-position-x: -$tabBarIconWidth*2;
+        }
     }
 
     .tab_selected .icon {
-        background-color: $brandColor1;
+        background-position-y: -$tabBarIconHeight*1
     }
 
     li:first-child a {
@@ -238,11 +248,11 @@ button, .button {
     text-align: center;
 
     .app_logo {
-        width: 80px;
-        height: 80px;
+        width: $appLogoWidth;
+        height: $appLogoHeight;
+        @include background(image-url("app_logo.png"));
+        background-size: 100%;
         margin-bottom: 24px;
-        background-color: #ccc;
-        @include border-radius(8px);
         display: inline-block;
     }
 }
@@ -266,25 +276,19 @@ button, .button {
     }
 
     .back {
-        color: #aaa;
         float: left;
-        width: 32px;
-        height: 32px;
         display: none;
-        border-right: 1px solid #555;
+        color: white;
+
+        span {
+            margin-left: 6px;
+            padding: 4px 8px;
+            border: 1px solid white;
+            line-height: $topBarHeight;
+            @include border-radius(2px);
+        }
     }
 
-    /* only apply this left border if the h1 is directly preceded by a displayed
-     * back button (one that hasBack)
-     */
-    .back.hasBack + h1 {
-        border-left: 1px solid #222;
-    }
-
-}
-
-.chevron {
-    background-image: url("../images/chevrons.png");
 }
 
 .back {
@@ -328,11 +332,16 @@ button, .button {
         display: inline-block;
         width: 20px;
         height: 20px;
-        background-color: #eeeeee;
+        @include background(image-url("arrows.png"));
+        background-size: 40px 40px;
+    }
+
+    .downvote {
+        background-position: 0px 20px;
     }
 
     .score {
-        padding: 4px 0px;
+        padding: 2px 0px 4px 0px;
         font-weight: 600;
         color: #999;
     }
@@ -340,13 +349,21 @@ button, .button {
 
 .link_post.upvoted {
     .upvote {
-        background-color: orange;
+        background-position: 20px 0px;
+    }
+
+    .score {
+        color: $brandColor1;
     }
 }
 
 .link_post.downvoted {
     .downvote {
-        background-color: red;
+        background-position: 20px 20px;
+    }
+
+    .score {
+        color: $notifBadColor;
     }
 }
 
@@ -399,4 +416,17 @@ button, .button {
     &.show_notif {
         top: 0px;
     }
+}
+
+/*---------- SPINNER -------------------------------------------------------- */
+
+.spinner {
+    position: absolute;
+    display: none;
+    top: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    @include background(image-url("spinner.gif"));
+    background-size: 100%;
 }
