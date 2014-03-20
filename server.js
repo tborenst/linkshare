@@ -105,7 +105,8 @@ app.post("/link", auth.authSession, function(req, res){
 /**
  * Get Links Route:
  * Returns an array of the N top links. 
- * - request should include "num" field to specify a max number of links
+ * - request should include "num" field to specify a max number of links, which
+ *   otherwise defaults to 10.
  * - response has status field (424, 200)
  * Each object in the array has the form:
  * {username, url, location, date, score, vote}
@@ -118,7 +119,7 @@ app.post("/link", auth.authSession, function(req, res){
  *   this link, and 0 otherwise or if the user is not logged in
  ***/
 app.get("/link", function(req, res){
-	var num = parseInt(req.query.num);
+	var num = (req.query.num) ? (parseInt(req.query.num)) : 10;
 	database.getTopNLinks(num, function(error, results){
 		if(error){
 			res.status(424).send({message: constants.MSG_INTERNAL});
@@ -128,36 +129,6 @@ app.get("/link", function(req, res){
 		}
 	});
 });
-
-/**
- * linkCleanup:
- * Helper method for the GET "/link" route which cleans the link results from
- * the database and prepares them for the client.
- ***/
-var linkCleanup = function(req, links){
-	for(var i = 0; i < links.length; i++){
-		var link = links[i];
-		var upvotes = link.upvotes;
-		var downvotes = link.downvotes;
-		// prep link
-		delete link.upvotes;
-		delete link.downvotes;
-		delete link._id;
-		link.vote = 0;
-		// calculate vote
-		if(req.user){
-			var username = req.user.username;
-			if(upvotes.indexOf(username) !== -1){
-				link.vote += 1;
-			} else if(downvotes.indexOf(username) !== -1){
-				link.vote -= 1;
-			}
-		}
-		// save link in results
-		links[i] = link;
-	}
-	return links;
-}
 
 /**
  * Upvote/Downvote Link Route:
@@ -201,14 +172,65 @@ app.put("/link", auth.authSession, function(req, res){
 	}
 });
 
+
+/**
+ * Get User Route:
+ * Returns basic user info in the format {count, score, links}.
+ * - count: number of posts this user has posted
+ * - score: sum of all scores of links this user has posted
+ * - links: an array of max-length N top links from this user
+ * - request may contain optional parameter "num" to specify N, which otherwise
+ *   defaults to 10.
+ ***/
+app.get("/user", auth.authSession, function(req, res){
+	var num = (req.query.num) ? (parseInt(req.query.num)) : 10;
+	database.getUserInfo(req.user.username, num, function(error, info){
+		if(error){
+			res.status(424).send({message: constants.MSG_INTERNAL});
+		} else {
+			info.links = linkCleanup(req, info.links);
+			res.status(200).send({message: constants.MSG_OK, info: info})
+		}
+	});
+});
+
+//================//
+// HELPER METHODS //
+//================//
+
+/**
+ * linkCleanup:
+ * Helper method for the GET "/link" route which cleans the link results from
+ * the database and prepares them for the client.
+ ***/
+var linkCleanup = function(req, links){
+	for(var i = 0; i < links.length; i++){
+		var link = links[i];
+		var upvotes = link.upvotes;
+		var downvotes = link.downvotes;
+		// prep link
+		delete link.upvotes;
+		delete link.downvotes;
+		delete link._id;
+		link.vote = 0;
+		// calculate vote
+		if(req.user){
+			var username = req.user.username;
+			if(upvotes.indexOf(username) !== -1){
+				link.vote += 1;
+			} else if(downvotes.indexOf(username) !== -1){
+				link.vote -= 1;
+			}
+		}
+		// save link in results
+		links[i] = link;
+	}
+	return links;
+}
+
 //==================//
 // DEBUGGING ROUTES //
 //==================//
-
-// user info (debugging)
-app.get("/user", auth.authSession, function(req, res){
-	res.status(200).send(req.user);
-});
 
 // debugging Route (debugging)
 app.get("/debug", function(req, res){

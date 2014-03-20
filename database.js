@@ -423,6 +423,45 @@ var deleteAllLinks = function(callback){
     });
 }
 
+/* ---------- OTHER METHODS ------------------------------------------------- */
+
+/**
+ * getUserInfo:
+ * Returns relevant user information to display on the client.
+ * - callback takes arguments (error, info)
+ * - info has the format {count, score, links}:
+ *   - count: number of links submitted by user
+ *   - score: sum of the scores of all links submitted by user
+ *   - links: array of max-length n of linkObjects posted by user sorted by 
+ *            score in descending order. 
+ ***/
+var getUserInfo = function(username, n, callback){
+    getCollection(constants.DB_LINKS, function(error, collection){
+        if(error){
+            callback(constants.ERR_INTERNAL, null);
+        } else {
+            var query = {username: username};
+            var cursor = collection.find(query).sort({score: -1});
+            cursor.toArray(function(error, results){
+                if(error){
+                    callback(constants.ERR_INTERNAL, null);
+                } else {
+                    var count = results.length;
+                    var score = 0;
+                    var links = [];
+                    for(var i = 0; i < count; i++){
+                        score += results[i].score;
+                        if(i < n){
+                            links.push(results[i]);
+                        }
+                    }
+                    callback(null, {count: count, score: score, links: links});
+                }
+            });
+        }
+    });
+}
+
 /* ---------- EXPORTS ------------------------------------------------------- */
 
 openDb();
@@ -441,7 +480,9 @@ module.exports = {
     getTopNLinks: getTopNLinks,
     upvoteLink: upvoteLink,
     downvoteLink: downvoteLink,
-    deleteAllLinks: deleteAllLinks
+    deleteAllLinks: deleteAllLinks,
+    // Other Methods
+    getUserInfo: getUserInfo
 };
 
 
