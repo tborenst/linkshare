@@ -371,7 +371,9 @@ function showNotification(msg, type){
 /* ---------- SPINNER ------------------------------------------------------- */
 
 $(document).bind("ajaxSend", function(){
-   $(".spinner").show();
+    if(connected){
+        $(".spinner").show();
+    }
  }).bind("ajaxComplete", function(){
    $(".spinner").hide();
  });
@@ -384,6 +386,14 @@ function setAppConnected(){
 }
 
 function setAppDisconnected(){
+    /* If already disconnected, pop the disconnected label to remind them */
+    if(!connected){
+        $(".disconnected").addClass("pop");
+        setTimeout(function(){
+            $(".disconnected").removeClass("pop");
+        }, 200);
+    }
+
     connected = false;
     $(".disconnected").show();
 }
@@ -392,6 +402,9 @@ function setAppDisconnected(){
 
 // TODO: The logic here can probably be reorganized */
 function handleAjaxError(jqXHR, textStatus, errorThrown){
+    console.log(jqXHR);
+    console.log(textStatus);
+    console.log(errorThrown);
 
     /* Attempt to parse out a returned error message */
     try {
@@ -402,6 +415,7 @@ function handleAjaxError(jqXHR, textStatus, errorThrown){
 
     /* If the server returned an error message, show a notif with it */
     if(errorMsg !== undefined){
+        console.log("errorMsg was ")
         /* if the server returned an error message, we can also safely
          * assume that we're connected again
          */
@@ -414,13 +428,15 @@ function handleAjaxError(jqXHR, textStatus, errorThrown){
             var errorMsg = "Connection timeout";
         } else {
 
-            /* If it's a 404 or 0, that means that either our server is down 
+            /* If it's a 404, 0 or 502, it means that either our server is down 
              * or the client is disconnected from the internet. In this 
              * case, we don't want to keep spamming them with error 
              * messages, we just want to put the app in a "disconnected" 
              * state.
              */
-            if((jqXHR.status == 404) || (jqXHR.status == 0)){
+            if((jqXHR.status == 404) || (jqXHR.status == 0) || (jqXHR.status == 502)){
+
+                var errorMsg = "Couldn't reach server (error " + jqXHR.status + ")";
 
                 /* if the app still thinks we're connected, show one
                  * error message and set us to disconnected. This should
@@ -429,8 +445,9 @@ function handleAjaxError(jqXHR, textStatus, errorThrown){
                  */
                 if(connected){
                     showNotification(errorMsg, "bad");
-                    setAppDisconnected();
                 }
+
+                setAppDisconnected();
             } else {
                 /* if not, create an error message with w/e the error was */
                 setAppConnected();

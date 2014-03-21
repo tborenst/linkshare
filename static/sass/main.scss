@@ -489,9 +489,19 @@ td {
 .disconnected {
     position: absolute;
     display: none;
-    top: 4px;
-    right: 46px;
-    width: 32px;
-    height: 32px;
-    background-color: red;
+    top: 12px;
+    right: 12px;
+    background-color: #666;
+    padding: 4px 6px;
+    @include border-radius(4px);
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: bold;
+    @include transition(all .1s);
+
+    &.pop {
+        background-color: $notifBadColor;
+        color: white;
+    }
 }
