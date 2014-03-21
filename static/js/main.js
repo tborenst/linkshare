@@ -4,7 +4,7 @@ Modernizr.addTest('standalone', function(){
 
 if(navigator.standalone != undefined && !!!navigator.standalone){
     // TODO: show notification telling users to install app as standalone
-    return;
+    //return;
 }
 
 /* For devices that are touch-enabled, use touchstart instead of click, in order
