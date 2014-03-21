@@ -771,12 +771,14 @@ td {
   text-transform: uppercase;
   font-size: 10px;
   font-weight: bold;
-  -webkit-transition: all 0.1s;
-  -moz-transition: all 0.1s;
-  -o-transition: all 0.1s;
-  transition: all 0.1s;
+  -webkit-transition: all 0.05s;
+  -moz-transition: all 0.05s;
+  -o-transition: all 0.05s;
+  transition: all 0.05s;
+  z-index: 9998;
+  /* force above panels (but not notifications) */
 }
-/* line 503, ../sass/main.scss */
+/* line 504, ../sass/main.scss */
 .disconnected.pop {
   background-color: #ff2300;
   color: white;

@@ -391,7 +391,7 @@ function setAppDisconnected(){
         $(".disconnected").addClass("pop");
         setTimeout(function(){
             $(".disconnected").removeClass("pop");
-        }, 200);
+        }, 100);
     }
 
     connected = false;

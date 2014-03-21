@@ -498,7 +498,8 @@ td {
     text-transform: uppercase;
     font-size: 10px;
     font-weight: bold;
-    @include transition(all .1s);
+    @include transition(all .05s);
+    z-index: 9998; /* force above panels (but not notifications) */
 
     &.pop {
         background-color: $notifBadColor;
