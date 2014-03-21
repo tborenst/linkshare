@@ -30,7 +30,7 @@ $(document).ajaxSuccess(function(){
 
 $(document).ready(function(){
     /* bind tab change links */
-    $("#tab_bar a").click(function(e){
+    $("#tab_bar a").on(clickEvent, function(e){
         e.preventDefault();
 
         var nextPanel = $(e.target.hash);
