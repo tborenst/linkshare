@@ -312,7 +312,7 @@ function loadContentForPanel(nextPanel){
                     if(jqXHR.status == "200"){
                         // Probably don't need to show a success message here
                         html = getHTML("user_profile_template", response.info);
-                        loadTarget = nextPanel.find(".padded_content_wrapper");
+                        loadTarget = nextPanel.find(".profile_content");
                         loadTarget.html(html);
                     }
                 }
