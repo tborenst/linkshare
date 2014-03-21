@@ -7,6 +7,9 @@ if(navigator.standalone != undefined && !!!navigator.standalone){
     //return;
 }
 
+//TODO: Where's the best place to put this?
+var connected = true;
+
 /* For devices that are touch-enabled, use touchstart instead of click, in order
  * to get rid of 300ms delay normally associated with click on touch devices
  */
@@ -14,29 +17,16 @@ var clickEvent = Modernizr.touch ? "touchstart" : "click";
 
 $.ajaxSetup({
     timeout: 3000, //Time in milliseconds
-    error: function(jqXHR, textStatus, errorThrown){  
-
-        /* Attempt to parse out a returned error message */
-        try {
-            var errorMsg = $.parseJSON(jqXHR.responseText).message;
-        } catch (err) {
-            // do nothing
-        }
-
-        if(errorMsg !== undefined){
-            showNotification(errorMsg, "bad");
-        } else {
-            if(textStatus == "timeout"){
-                var errorMsg = "Connection timeout";
-            } else {
-                var errorMsg = jqXHR.status + ": " + errorThrown
-            }
-
-            showNotification(errorMsg, "bad");
-        }
-
+    error: function(jqXHR, textStatus, errorThrown){
+        handleAjaxError(jqXHR, textStatus, errorThrown);
     }
 });
+
+/* Whenever we have an ajaxSuccess, we can safely assume that we're connected */
+$(document).ajaxSuccess(function(){
+    setAppConnected();
+    console.log("Connected: " + connected);
+})
 
 $(document).ready(function(){
     /* bind tab change links */
@@ -192,15 +182,6 @@ $(document).ready(function(){
     Handlebars.registerPartial("link", $("#link_template").html());
 
 });
-
-//TODO: Any way to not log the error, catch it here instead?
-/*
-$(document).bind("ajaxError", function(e, jqXHR, settings, exception){
-    e.preventDefault();
-    var errorMsg = $.parseJSON(jqXHR.responseText).message;
-    showNotification(errorMsg, "bad");
-})
-*/
 
 //TODO: This should probably be a POST, not a PUT
 function voteOnLink(linkID, voteType){
@@ -394,6 +375,79 @@ $(document).bind("ajaxSend", function(){
  }).bind("ajaxComplete", function(){
    $(".spinner").hide();
  });
+
+/* ---------- APP CONNECTION STATE ------------------------------------------ */
+
+function setAppConnected(){
+    connected = true;
+    $(".disconnected").hide();
+}
+
+function setAppDisconnected(){
+    connected = false;
+    $(".disconnected").show();
+}
+
+/* ---------- AJAX ERROR HANDLER -------------------------------------------- */
+
+// TODO: The logic here can probably be reorganized */
+function handleAjaxError(jqXHR, textStatus, errorThrown){
+
+    /* Attempt to parse out a returned error message */
+    try {
+        var errorMsg = $.parseJSON(jqXHR.responseText).message;
+    } catch (err) {
+        // do nothing
+    }
+
+    /* If the server returned an error message, show a notif with it */
+    if(errorMsg !== undefined){
+        /* if the server returned an error message, we can also safely
+         * assume that we're connected again
+         */
+        setAppConnected();
+        showNotification(errorMsg, "bad");
+    } else { /* ...if not, see why the error occurred */
+        if(textStatus == "timeout"){
+            /* if it was a timeout just display a message saying so */
+            setAppConnected();
+            var errorMsg = "Connection timeout";
+        } else {
+
+            /* If it's a 404 or 0, that means that either our server is down 
+             * or the client is disconnected from the internet. In this 
+             * case, we don't want to keep spamming them with error 
+             * messages, we just want to put the app in a "disconnected" 
+             * state.
+             */
+            if((jqXHR.status == 404) || (jqXHR.status == 0)){
+
+                /* if the app still thinks we're connected, show one
+                 * error message and set us to disconnected. This should
+                 * run the *first* time an error occurs, but not
+                 * subsequently until we've had at least one ajaxSuccess
+                 */
+                if(connected){
+                    showNotification(errorMsg, "bad");
+                    setAppDisconnected();
+                }
+            } else {
+                /* if not, create an error message with w/e the error was */
+                setAppConnected();
+                var errorMsg = jqXHR.status + ": " + errorThrown
+            }
+        }
+
+        /* Again, as long as we're connected, feel free to show
+         * whatever the error message is
+         */
+        if(connected){
+            showNotification(errorMsg, "bad");
+        }
+
+    }
+
+}
 
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
 

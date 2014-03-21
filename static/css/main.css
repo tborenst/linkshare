@@ -752,3 +752,15 @@ td {
   background: url('/images/spinner.gif?1395207378');
   background-size: 100%;
 }
+
+/*---------- DISCONNECTED --------------------------------------------------- */
+/* line 489, ../sass/main.scss */
+.disconnected {
+  position: absolute;
+  display: none;
+  top: 4px;
+  right: 46px;
+  width: 32px;
+  height: 32px;
+  background-color: red;
+}
