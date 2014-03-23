@@ -132,7 +132,6 @@ $(document).ready(function(){
         });
     });
 
-    //TODO: Change this to touchstart
     //TODO: Comment on event delegation here
     $(document).on(clickEvent, ".logout_link", function(e){
         e.preventDefault();
@@ -153,7 +152,6 @@ $(document).ready(function(){
         })
     });
 
-    //TODO: Change this to touchstart
     /* Need to attach this handler to the #feed_panel and have .upvote delegate
      * to it because .upvote doesn't exist on page load
      */
@@ -163,7 +161,6 @@ $(document).ready(function(){
         voteOnLink(id, 1);
     });
 
-    //TODO: Change this to touchstart
     /* Need to attach this handler to the #feed_panel and have .downvote 
      * delegate to it because .downvote doesn't exist on page load
      */
