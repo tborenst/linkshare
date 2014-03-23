@@ -115,6 +115,13 @@ form button, form .button {
     width: 100%;
 }
 
+/* Hide the geolocation checkbox by default (We will show it with js if 
+ * geolocation is detected as available on the device)
+ */
+.geolocation_checkbox {
+    display: none;
+}
+
 /*---------- BUTTONS -------------------------------------------------------- */
 
 button, .button {

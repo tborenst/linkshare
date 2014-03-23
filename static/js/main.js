@@ -21,6 +21,11 @@ $(document).ready(function(){
     attachFormSubmissionHandlers();
     attachVoteHandlers();
 
+    /* show the geolocation checkbox if geolocation is available */
+    if(Modernizr.geolocation){
+        $(".geolocation_checkbox").show();
+    }
+
     //TODO: detect if user already logged in and go straight to feed?
     loadContentForPanel($("#login_panel"));
     visits.add($("#login_panel"));
