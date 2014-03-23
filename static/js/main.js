@@ -103,7 +103,7 @@ function attachFormSubmissionHandlers(){
     $("form[name=new_post_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
-        var data = form.jsonSerializeForm();
+        var data = JSON.stringify(form.jsonizeForm());
 
         $.ajax({
             type: "POST",
@@ -127,7 +127,7 @@ function attachFormSubmissionHandlers(){
     $("form[name=create_account_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
-        var data = form.jsonSerializeForm();
+        var data = JSON.stringify(form.jsonizeForm());
 
         $.ajax({
             type: "POST",
@@ -149,7 +149,7 @@ function attachFormSubmissionHandlers(){
     $("form[name=login_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
-        var data = form.jsonSerializeForm();
+        var data = JSON.stringify(form.jsonizeForm());
 
         $.ajax({
             type: "POST",
@@ -511,7 +511,7 @@ Handlebars.registerHelper('voteClass', function(vote) {
  * one isn't perfect, but it seems good enough for our purposes
  */
 (function ($) {
-    jQuery.fn.jsonSerializeForm = function(){
+    jQuery.fn.jsonizeForm = function(){
         var obj = {};
         var form = this[0];
         $(form.elements).each(function(){
@@ -519,7 +519,7 @@ Handlebars.registerHelper('voteClass', function(vote) {
                 obj[this.name] = $(this).val();
             }
         });
-        return JSON.stringify(obj);
+        return obj;
     }
 }(jQuery));
 
