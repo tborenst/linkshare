@@ -64,7 +64,7 @@ h2 {
 
 /*---------- FORM ELEMENTS -------------------------------------------------- */
 
-input, .button, button {
+input[type=text], input[type=password], .button, button {
     display: block;
     width: 100%;
     @include box-sizing(border-box);
@@ -91,11 +91,24 @@ input[type=text], input[type=password] {
     border: 1px solid #444;
 }
 
+input[type=checkbox] {
+    margin-bottom: 22px;
+    margin-right: 10px;
+}
+
 label {
     color: #ccc;
     margin-bottom: 8px;
     width: 100%;
     display: block;
+}
+
+/* only target labels immediately following a checkbox input element */
+input[type=checkbox] + label {
+    width: auto;
+    display: inline;
+    position: relative;
+    top: 2px;
 }
 
 form button, form .button {
