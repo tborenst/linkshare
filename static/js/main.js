@@ -43,7 +43,6 @@ function attachAjaxSetupHandlers(){
     /* Whenever we have an ajaxSuccess, we can safely assume that we're connected */
     $(document).ajaxSuccess(function(){
         setAppConnected();
-        console.log("Connected: " + connected);
     });
 }
 
