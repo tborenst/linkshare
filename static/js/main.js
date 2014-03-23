@@ -13,22 +13,41 @@ var connected = true;
 /* For devices that are touch-enabled, use touchstart instead of click, in order
  * to get rid of 300ms delay normally associated with click on touch devices
  */
-var clickEvent = Modernizr.touch ? "touchstart" : "click"; 
-
-$.ajaxSetup({
-    timeout: 3000, //Time in milliseconds
-    error: function(jqXHR, textStatus, errorThrown){
-        handleAjaxError(jqXHR, textStatus, errorThrown);
-    }
-});
-
-/* Whenever we have an ajaxSuccess, we can safely assume that we're connected */
-$(document).ajaxSuccess(function(){
-    setAppConnected();
-    console.log("Connected: " + connected);
-})
+var clickEvent = Modernizr.touch ? "touchstart" : "click";
 
 $(document).ready(function(){
+    attachAjaxSetupHandlers();
+    attachUIHandlers();
+    attachFormSubmissionHandlers();
+    attachVoteHandlers();
+
+    //TODO: detect if user already logged in and go straight to feed?
+    loadContentForPanel($("#login_panel"));
+    visits.add($("#login_panel"));
+
+    registerHandlebarsPartials();
+
+});
+
+/* ---------- EVENT HANDLERS ------------------------------------------------ */
+
+function attachAjaxSetupHandlers(){
+    /* Provide an error function for all ajax requests henceforth */
+    $.ajaxSetup({
+        timeout: 3000, //TODO: Make this a parameter
+        error: function(jqXHR, textStatus, errorThrown){
+            handleAjaxError(jqXHR, textStatus, errorThrown);
+        }
+    });
+
+    /* Whenever we have an ajaxSuccess, we can safely assume that we're connected */
+    $(document).ajaxSuccess(function(){
+        setAppConnected();
+        console.log("Connected: " + connected);
+    });
+}
+
+function attachUIHandlers(){
     /* bind tab change links */
     $("#tab_bar a").on(clickEvent, function(e){
         e.preventDefault();
@@ -60,6 +79,28 @@ $(document).ready(function(){
         }
     });
 
+    //TODO: Comment on event delegation here
+    $(document).on(clickEvent, ".logout_link", function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: "DELETE",
+            url: "/session",
+            dataType: "json",
+            success: function(response, status, jqXHR){
+                if(jqXHR.status == "200"){
+                    showNotification("Logged out successfully!");
+                    visits.clear();
+                    hideTabBar();
+                    loadContentForPanel($("#login_panel"));
+                    transition($("#login_panel"), "crossfade");
+                }
+            }
+        })
+    });
+}
+
+function attachFormSubmissionHandlers(){
     $("form[name=new_post_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
@@ -131,27 +172,9 @@ $(document).ready(function(){
             }
         });
     });
+}
 
-    //TODO: Comment on event delegation here
-    $(document).on(clickEvent, ".logout_link", function(e){
-        e.preventDefault();
-
-        $.ajax({
-            type: "DELETE",
-            url: "/session",
-            dataType: "json",
-            success: function(response, status, jqXHR){
-                if(jqXHR.status == "200"){
-                    showNotification("Logged out successfully!");
-                    visits.clear();
-                    hideTabBar();
-                    loadContentForPanel($("#login_panel"));
-                    transition($("#login_panel"), "crossfade");
-                }
-            }
-        })
-    });
-
+function attachVoteHandlers(){
     /* Need to attach this handler to the #feed_panel and have .upvote delegate
      * to it because .upvote doesn't exist on page load
      */
@@ -169,16 +192,12 @@ $(document).ready(function(){
         var id = $(this).closest(".link_post").data().id;
         voteOnLink(id, -1);
     });
+}
 
-
-    //TODO: detect if user already logged in and go straight to feed?
-    loadContentForPanel($("#login_panel"));
-    visits.add($("#login_panel"));
-
-    //TODO: Comment about why this is here
+//TODO: Comment about why this is here
+function registerHandlebarsPartials(){
     Handlebars.registerPartial("link", $("#link_template").html());
-
-});
+}
 
 //TODO: This should probably be a POST, not a PUT
 function voteOnLink(linkID, voteType){
