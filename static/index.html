@@ -192,7 +192,14 @@
                 </ul>
             {{/if}}
 
+            {{#if location}}
+                <h2>Your Location</h2>
+                <img src="{{getMapUrl location}}" />
+            {{/if}}
+
         </script>
+
+
 
         <script id="link_template" type="text/x-handlebars-template">
             <li class="link_post {{voteClass vote}}" data-id="{{ this.linkId }}">

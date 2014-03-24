@@ -569,6 +569,21 @@ Handlebars.registerHelper('voteClass', function(vote) {
   }
 });
 
+/* Given a location object, return a url to a static map of that location
+ * (using the Google Maps static maps API)
+ */
+Handlebars.registerHelper("getMapUrl", function(location){
+    return "http://maps.googleapis.com/maps/api/staticmap?center=" 
+           + location.lat +"," + location.lon
+           + "&zoom=11"
+           + "&size=400x300"
+           + "&sensor=false"
+           + "&markers=" 
+               + "color:0x019BC6" + "%7C"
+               + "label:You" + "%7C" + 
+               + location.lat + "," + location.lon;
+});
+
 /* ---------- OTHER UTILS --------------------------------------------------- */
 
 /* Given a form object, returns a stringified JSON object of all form elements
