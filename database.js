@@ -448,31 +448,46 @@ var deleteAllLinks = function(callback){
  *            score in descending order. 
  ***/
 var getUserInfo = function(username, n, callback){
-    getCollection(constants.DB_LINKS, function(error, collection){
+    findUser(username, function(error, user){
         if(error){
-            callback(constants.ERR_INTERNAL, null);
-        } else {
-            var query = {username: username};
-            var cursor = collection.find(query).sort({score: -1});
-            cursor.toArray(function(error, results){
+            callback(error);
+        } else if(user !== null){
+            var location = user.location;
+
+            /* We've found a user, now find their posts */
+            getCollection(constants.DB_LINKS, function(error, collection){
                 if(error){
                     callback(constants.ERR_INTERNAL, null);
                 } else {
-                    var count = results.length;
-                    var score = 0;
-                    var links = [];
-                    for(var i = 0; i < count; i++){
-                        score += results[i].score;
-                        if(i < n){
-                            links.push(results[i]);
+                    var query = {username: username};
+                    var cursor = collection.find(query).sort({score: -1});
+                    cursor.toArray(function(error, results){
+                        if(error){
+                            callback(constants.ERR_INTERNAL, null);
+                        } else {
+                            var count = results.length;
+                            var score = 0;
+                            var links = [];
+                            for(var i = 0; i < count; i++){
+                                score += results[i].score;
+                                if(i < n){
+                                    links.push(results[i]);
+                                }
+                            }
+                            callback(null, {count: count, score: score, links: links, 
+                                username: username, location: location});
                         }
-                    }
-                    callback(null, {count: count, score: score, links: links, 
-                        username: username});
+                    });
                 }
             });
+
+        } else {
+            // user doesn't exist
+            callback(constants.ERR_USER_DOESNT_EXIST);
         }
     });
+
+
 }
 
 /* ---------- EXPORTS ------------------------------------------------------- */

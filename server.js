@@ -32,14 +32,10 @@ app.configure(function(){
  * - response sends back data {message: str} and has a status field (424/409/200)
  ***/
 app.post("/user", function(req, res){
-	var username = req.body.username
-	var password = req.body.password
-	var location = req.body.location
+	var username = req.body.username;
+	var password = req.body.password;
+	var location = req.body.location;
 
-	console.log("Location info:");
-	console.log(req.body.location.lat);
-	console.log(req.body.location.lon);
-	
 	database.addUser(username, password, location, function(error, success){
 		if(error === constants.ERR_INTERNAL){
 			res.status(424).send({message: constants.MSG_INTERNAL});

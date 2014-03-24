@@ -5,6 +5,7 @@ module.exports = {
     DB_LINKS: "links",
     // errors
     ERR_INTERNAL: "internal server error",
+    ERR_USER_DOESNT_EXIST: "the user does not exist",
     ERR_USER_EXISTS: "username already exists",
     ERR_NOT_MATCH: "the username/password combination does not match",
     // auth
