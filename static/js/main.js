@@ -603,6 +603,19 @@ Handlebars.registerHelper("getMapUrl", function(location){
                + location.lat + "," + location.lon;
 });
 
+/* Given the date string returned by the server on link objects, returns
+ * only the month (abbreviated) and the day. For example, the string
+ * "Mon Mar 24 2014" will return Mar 24.
+ *
+ * NOTE: This is temporary fix--in the future we should definitely store
+ * the full date object on the server and use something like jquery.timeago
+ * to compute fuzzy timestamps
+ */
+Handlebars.registerHelper("formatDate", function(dateStr){
+    var date_components = dateStr.split(" ");
+    return date_components[1] + " " + date_components[2];
+});
+
 /* ---------- OTHER UTILS --------------------------------------------------- */
 
 /* Given a form object, returns a stringified JSON object of all form elements
