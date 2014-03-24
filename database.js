@@ -108,7 +108,7 @@ var findUser = function(username, callback){
  * - error will be null if operation successful
  * - passwords are stored as PLAIN TEXT (do not do this IRL!)
  ***/
-var addUser = function(username, password, callback){
+var addUser = function(username, password, location, callback){
     findUser(username, function(error, user){
         if(error){
             callback(error);
@@ -120,7 +120,7 @@ var addUser = function(username, password, callback){
                 if(error){
                     callback(constants.ERR_INTERNAL);
                 } else {
-                    var user = {username: username, password: password};
+                    var user = {username: username, password: password, location: location};
                     collection.insert(user, function(error){
                         if(error){
                             callback(constants.ERR_INTERNAL);

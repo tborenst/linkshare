@@ -132,7 +132,40 @@ function attachFormSubmissionHandlers(){
     $("form[name=create_account_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
-        var data = JSON.stringify(form.jsonizeForm());
+        var formObj = form.jsonizeForm();
+
+        if( $(".geolocation_checkbox input", form).is(":checked")){
+            showSpinner();
+
+            getLocation(function(position){
+                hideSpinner();
+
+                var location = {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                }
+
+                formObj.location = location;
+                var data = JSON.stringify(formObj);
+                sendCreateAccountRequest(data, form)
+                
+            }, function(){
+                hideSpinner();
+                showNotification("Couldn't obtain location", "bad");
+            }, function(){
+                hideSpinner();
+                showNotification("Your device doesn't support geolocation", "bad");
+            });
+
+        } else {
+
+            var data = JSON.stringify(form.jsonizeForm());
+            sendCreateAccountRequest(data, form);
+        }
+    });
+
+    /* Helper function for the above create account form submission handler */
+    function sendCreateAccountRequest(data, form){
 
         $.ajax({
             type: "POST",
@@ -149,7 +182,7 @@ function attachFormSubmissionHandlers(){
                 }
             }
         });
-    });
+    }
 
     $("form[name=login_form]").submit(function(e){
         e.preventDefault();
@@ -352,6 +385,25 @@ function hideTabBar(){
     $("#tab_bar").removeClass("tab_bar_show");
 }
 
+
+function getLocation(success_callback, error_callback, not_supported_callback){
+
+    var geolocation_options = {
+        timeout: 10000
+    }
+
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(success_callback, 
+            error_callback, geolocation_options);
+    } else {
+        if(not_supported_callback){
+            not_supported_callback();
+        } else {
+            showNotification("Your device doesn't support geolocation", "bad");
+        }
+    }
+}
+
 /* ---------- HISTORY ------------------------------------------------------- */
 
 var visits = {
@@ -392,11 +444,19 @@ function showNotification(msg, type){
 
 $(document).bind("ajaxSend", function(){
     if(connected){
-        $(".spinner").show();
+        showSpinner();
     }
  }).bind("ajaxComplete", function(){
-   $(".spinner").hide();
+    hideSpinner();
  });
+
+ function showSpinner(){
+    $(".spinner").show();
+ }
+
+ function hideSpinner(){
+    $(".spinner").hide();
+ }
 
 /* ---------- APP CONNECTION STATE ------------------------------------------ */
 
