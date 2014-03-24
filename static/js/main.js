@@ -164,26 +164,6 @@ function attachFormSubmissionHandlers(){
         }
     });
 
-    /* Helper function for the above create account form submission handler */
-    function sendCreateAccountRequest(data, form){
-
-        $.ajax({
-            type: "POST",
-            url: "/user",
-            contentType: "application/json",
-            data: data,
-            dataType: "json",
-            success: function(response, statusText, jqXHR){
-                if(jqXHR.status == "200"){
-                    showNotification("Account created!");
-                    form.clearForm();
-                    //TODO: Auto-login and go to feed panel instead?
-                    transition($("#login_panel"), "push", true);
-                }
-            }
-        });
-    }
-
     $("form[name=login_form]").submit(function(e){
         e.preventDefault();
         var form = $(this);
@@ -231,49 +211,12 @@ function attachVoteHandlers(){
     });
 }
 
-//TODO: Comment about why this is here
-function registerHandlebarsPartials(){
-    Handlebars.registerPartial("link", $("#link_template").html());
-}
+/* ---------- PRIMARY UI FUNCTIONS ------------------------------------------ */
 
-//TODO: This should probably be a POST, not a PUT
-function voteOnLink(linkID, voteType){
-    var obj = {
-        id: linkID,
-        vote: voteType
-    }
-
-    var data = JSON.stringify(obj);
-
-    $.ajax({
-        type: "PUT",
-        url: "/link",
-        contentType: "application/json",
-        dataType: "json",
-        data: data,
-        success: function(response, status, jqXHR){
-            if(jqXHR.status == "200"){
-                //Probably don't need to show a success message here
-                updateLinkAppearance(linkID, response.vote, response.score);
-            }
-        }
-    });
-}
-
-function updateLinkAppearance(id, vote, score){
-    var link = $(".link_post[data-id=" + id +"]");
-
-    link.removeClass("upvoted downvoted");
-
-    if(vote > 0){
-        link.addClass("upvoted");
-    } else if (vote < 0){
-        link.addClass("downvoted");
-    }
-
-    $(".score", link).html(score);
-}
-
+/* Transitions to a new app panel using the specified animation name, and
+ * (if needed) updates the tab bar to be consistent with what's displayed.
+ * Also takes care of back/forward logic/animations via the history object
+ */
 function transition(toPanel, type, reverse) {
     var toPanel = $(toPanel)
     var fromPanel = $("#panels .current");
@@ -329,7 +272,9 @@ function transition(toPanel, type, reverse) {
     }
 }
 
-/* a load function to simulate responses from a server */
+/* Fetches data for the nextPanel, renders it into a handlebars template, and 
+ * places it into the DOM
+ */
 function loadContentForPanel(nextPanel){
     var panelToLoad = nextPanel.attr("id");
     var loadTarget;
@@ -377,15 +322,11 @@ function loadContentForPanel(nextPanel){
     }
 }
 
-function showTabBar(){
-    $("#tab_bar").addClass("tab_bar_show");
-}
+/* ---------- GEOLOCATION --------------------------------------------------- */
 
-function hideTabBar(){
-    $("#tab_bar").removeClass("tab_bar_show");
-}
-
-
+/* A wrapper for getCurrentPosition which defines geolocation options, and has
+ * a little bit more utility when it comes to error handling and such
+ */
 function getLocation(success_callback, error_callback, not_supported_callback){
 
     var geolocation_options = {
@@ -446,17 +387,17 @@ $(document).bind("ajaxSend", function(){
     if(connected){
         showSpinner();
     }
- }).bind("ajaxComplete", function(){
+}).bind("ajaxComplete", function(){
     hideSpinner();
- });
+});
 
- function showSpinner(){
+function showSpinner(){
     $(".spinner").show();
- }
+}
 
- function hideSpinner(){
+function hideSpinner(){
     $(".spinner").hide();
- }
+}
 
 /* ---------- APP CONNECTION STATE ------------------------------------------ */
 
@@ -466,7 +407,9 @@ function setAppConnected(){
 }
 
 function setAppDisconnected(){
-    /* If already disconnected, pop the disconnected label to remind them */
+    /* If already disconnected, pop the disconnected label to remind the user
+     * that they are disconnected! 
+     */
     if(!connected){
         $(".disconnected").addClass("pop");
         setTimeout(function(){
@@ -476,6 +419,30 @@ function setAppDisconnected(){
 
     connected = false;
     $(".disconnected").show();
+}
+
+/* ---------- OTHER UI UTILITY FUNCTIONS ------------------------------------ */
+
+function showTabBar(){
+    $("#tab_bar").addClass("tab_bar_show");
+}
+
+function hideTabBar(){
+    $("#tab_bar").removeClass("tab_bar_show");
+}
+
+function updateLinkAppearance(id, vote, score){
+    var link = $(".link_post[data-id=" + id +"]");
+
+    link.removeClass("upvoted downvoted");
+
+    if(vote > 0){
+        link.addClass("upvoted");
+    } else if (vote < 0){
+        link.addClass("downvoted");
+    }
+
+    $(".score", link).html(score);
 }
 
 /* ---------- AJAX ERROR HANDLER -------------------------------------------- */
@@ -495,7 +462,6 @@ function handleAjaxError(jqXHR, textStatus, errorThrown){
 
     /* If the server returned an error message, show a notif with it */
     if(errorMsg !== undefined){
-        console.log("errorMsg was ")
         /* if the server returned an error message, we can also safely
          * assume that we're connected again
          */
@@ -546,7 +512,60 @@ function handleAjaxError(jqXHR, textStatus, errorThrown){
 
 }
 
+/* ---------- AJAX HELPERS -------------------------------------------------- */
+
+/* Helper function for the create account form submission handler */
+function sendCreateAccountRequest(data, form){
+
+    $.ajax({
+        type: "POST",
+        url: "/user",
+        contentType: "application/json",
+        data: data,
+        dataType: "json",
+        success: function(response, statusText, jqXHR){
+            if(jqXHR.status == "200"){
+                showNotification("Account created!");
+                form.clearForm();
+                //TODO: Auto-login and go to feed panel instead?
+                transition($("#login_panel"), "push", true);
+            }
+        }
+    });
+}
+
+/* Helper function for the vote handlers */
+function voteOnLink(linkID, voteType){
+    var obj = {
+        id: linkID,
+        vote: voteType
+    }
+
+    var data = JSON.stringify(obj);
+
+    $.ajax({
+        type: "PUT",
+        url: "/link",
+        contentType: "application/json",
+        dataType: "json",
+        data: data,
+        success: function(response, status, jqXHR){
+            if(jqXHR.status == "200"){
+                //Probably don't need to show a success message here
+                updateLinkAppearance(linkID, response.vote, response.score);
+            }
+        }
+    });
+}
+
 /* ---------- HANDLEBARS NONSENSE ------------------------------------------- */
+
+/* templates that are called in *other* templates must be registered with
+ * Handlebars as partials
+ */
+function registerHandlebarsPartials(){
+    Handlebars.registerPartial("link", $("#link_template").html());
+}
 
 /* Helper function to compile and render a handlebars template into html */
 function getHTML(templateID, context){
