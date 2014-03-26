@@ -95,15 +95,26 @@ app.delete("/session", function(req, res){
 app.post("/link", auth.authSession, function(req, res){
 	var username = req.user.username;
 	var url = req.body.url;
-	var title = req.body.title;
-	var location = req.body.location;
-	database.addLink(username, url, title, location, function(error){
-		if(error){
-			res.status(424).send({message: constants.MSG_INTERNAL});
-		} else {
-			res.status(200).send({message: constants.MSG_OK});
-		}
-	});
+
+	/* it's important that this goes before isValidUrl. isValidUrl will fail
+	 * if the submitted url doesn't include a http/https. So we want to add this
+	 * (if needed) to the url before we check if it's valid
+	 */
+	url = formatUrl(url);
+
+	if(isValidUrl(url)){
+		var title = req.body.title;
+		var location = req.body.location;
+		database.addLink(username, url, title, location, function(error){
+			if(error){
+				res.status(424).send({message: constants.MSG_INTERNAL});
+			} else {
+				res.status(200).send({message: constants.MSG_OK});
+			}
+		});
+	} else {
+		res.status(424).send({message: constants.MSG_INVALID_URL});
+	}
 });
 
 /**
@@ -220,6 +231,29 @@ var linkCleanup = function(req, links){
 		links[i] = link;
 	}
 	return links;
+}
+
+/**
+ * formatUrl:
+ * Helper method to add "http://" to a url if it's not there already
+ ***/
+var formatUrl = function(url){
+	var hasScheme = (url.match(constants.REGEX_HTTP_HTTPS) !== null);
+	if(hasScheme){
+		return url;
+	} else {
+		return "http://" + url;
+	}
+}
+
+/**
+ * isValidUrl:
+ * Helper method to see if a url is valid by testing it against a URL regex
+ ***/
+var isValidUrl = function(url){
+	console.log("url: ", url)
+	console.log("valid?: ", (url.match(constants.REGEX_URL)!== null));
+	return (url.match(constants.REGEX_URL)!== null);
 }
 
 //==================//

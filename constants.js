@@ -1,3 +1,5 @@
+/* ---------- EXPORTS ------------------------------------------------------- */
+
 module.exports = {
     // names
     DB_HOST: "localhost",
@@ -16,5 +18,9 @@ module.exports = {
     MSG_INTERNAL: "There was an error with the server, please try again later.",
     MSG_USER_EXISTS: "This username is already in use, please pick another username.",
     MSG_CREDENTIALS: "The username/password pair you have entered is incorrect.",
-    MSG_OK: "OK"
+    MSG_INVALID_URL: "The submitted url isn't valid",
+    MSG_OK: "OK",
+    // regular expressions
+    REGEX_URL: new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/),
+    REGEX_HTTP_HTTPS: new RegExp(/^https?:\/\//)
 }
