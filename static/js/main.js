@@ -147,7 +147,7 @@ function attachFormSubmissionHandlers(){
 
                 formObj.location = location;
                 var data = JSON.stringify(formObj);
-                sendCreateAccountRequest(data, form)
+                sendCreateAccountRequest(data, form);
                 
             }, function(){
                 hideSpinner();
@@ -378,7 +378,7 @@ function showNotification(msg, type){
     notif.addClass("show_notif");
     setTimeout(function(){
         notif.removeClass("show_notif");
-    }, 3000)
+    }, 3000);
 }
 
 /* ---------- SPINNER ------------------------------------------------------- */
