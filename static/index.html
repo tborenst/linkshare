@@ -211,7 +211,7 @@
                 <div class="post_content">
                     <h2>
                         <a href="{{ this.url }}" target="_blank">{{ this.title }}</a>
-                        <span class="post_domain">({{ this.url }})</span>
+                        <span class="post_domain">({{getDomain this.url}})</span>
                     </h2>
                     <span class="post_info">submitted on {{formatDate this.date}} by {{ this.username }}</span>
                 </div>

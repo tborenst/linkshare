@@ -251,8 +251,6 @@ var formatUrl = function(url){
  * Helper method to see if a url is valid by testing it against a URL regex
  ***/
 var isValidUrl = function(url){
-	console.log("url: ", url)
-	console.log("valid?: ", (url.match(constants.REGEX_URL)!== null));
 	return (url.match(constants.REGEX_URL)!== null);
 }
 

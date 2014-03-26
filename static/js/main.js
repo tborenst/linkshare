@@ -616,6 +616,14 @@ Handlebars.registerHelper("formatDate", function(dateStr){
     return date_components[1] + " " + date_components[2];
 });
 
+/* Given a url, return the domain associated with that url. This method uses
+ * jquery to create a link element with the href set as the url, then takes
+ * advantage of the browsers built-in url parser to get the hostname back out
+ */
+Handlebars.registerHelper("getDomain", function(url){
+    return $("<a>").prop("href", url).prop("hostname");
+});
+
 /* ---------- OTHER UTILS --------------------------------------------------- */
 
 /* Given a form object, returns a stringified JSON object of all form elements
