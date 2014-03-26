@@ -33,6 +33,7 @@ body {
 a:link {
     /* change the tap highlight color in webkit browsers */
     -webkit-tap-highlight-color: rgba(0,0,0,.2);
+    color: $brandColor1;
     text-decoration: none;
 }
 
@@ -328,6 +329,23 @@ td {
         @include border-radius(4px);
         overflow: hidden;
         margin-bottom: 22px;
+    }
+}
+
+#feed_panel {
+    .no_links_message {
+        text-align: center;
+        color: #cccccc;
+
+        h2 {
+            color: white;
+            font-size: 24px;
+        }
+
+        img {
+            width: 60%;
+            margin-bottom: 8px;
+        }
     }
 }
 

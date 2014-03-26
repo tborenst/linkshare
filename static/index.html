@@ -163,7 +163,15 @@
                 {{#each this}}
                     {{>link}}
                 {{else}}
-                    <p>No links found :(</p>
+                    <div class="no_links_message">
+                        <img src="images/no_links_found.png">
+                        <h2>No links found</h2>
+                        <p>Why not try 
+                            <a href="#post_panel" class="panel_link">
+                                posting one yourself?
+                            </a>
+                        </p>
+                    </div>
                 {{/each}}
             </ul>
         </script>
