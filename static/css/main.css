@@ -395,14 +395,15 @@ button:focus, .button:focus {
 /* line 147, ../sass/main.scss */
 button.button_create, .button.button_create {
   background-color: #008c2a;
+  color: white;
 }
-/* line 150, ../sass/main.scss */
+/* line 151, ../sass/main.scss */
 button.button_create:active, .button.button_create:active {
   background-color: #007322;
 }
 
 /*---------- TABLES --------------------------------------------------------- */
-/* line 158, ../sass/main.scss */
+/* line 159, ../sass/main.scss */
 table {
   width: 100%;
   color: #ccc;
@@ -415,22 +416,22 @@ table {
   margin-bottom: 22px;
 }
 
-/* line 168, ../sass/main.scss */
+/* line 169, ../sass/main.scss */
 tr:nth-child(odd) {
   background-color: #555;
 }
-/* line 172, ../sass/main.scss */
+/* line 173, ../sass/main.scss */
 tr:nth-child(even) {
   background-color: #666;
 }
 
-/* line 177, ../sass/main.scss */
+/* line 178, ../sass/main.scss */
 td {
   padding: 10px;
 }
 
 /*---------- TAB BAR -------------------------------------------------------- */
-/* line 183, ../sass/main.scss */
+/* line 184, ../sass/main.scss */
 #tab_bar {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -457,29 +458,29 @@ td {
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
-/* line 199, ../sass/main.scss */
+/* line 200, ../sass/main.scss */
 #tab_bar:before, #tab_bar:after {
   content: "\0020";
   display: block;
   height: 0;
   overflow: hidden;
 }
-/* line 206, ../sass/main.scss */
+/* line 207, ../sass/main.scss */
 #tab_bar:after {
   clear: both;
 }
-/* line 210, ../sass/main.scss */
+/* line 211, ../sass/main.scss */
 #tab_bar.tab_bar_show {
   bottom: 0;
 }
-/* line 214, ../sass/main.scss */
+/* line 215, ../sass/main.scss */
 #tab_bar li {
   display: inline;
   float: left;
   height: 70px;
   width: 33.33333%;
 }
-/* line 221, ../sass/main.scss */
+/* line 222, ../sass/main.scss */
 #tab_bar a {
   color: #bbbbbb;
   display: block;
@@ -494,7 +495,7 @@ td {
   border-right: 1px solid #333333;
   border-left: 1px solid #333333;
 }
-/* line 237, ../sass/main.scss */
+/* line 238, ../sass/main.scss */
 #tab_bar .icon {
   width: 30px;
   height: 30px;
@@ -504,38 +505,38 @@ td {
   margin: 5px 0 7px 0;
   pointer-events: none;
 }
-/* line 246, ../sass/main.scss */
+/* line 247, ../sass/main.scss */
 #tab_bar .icon.profile_icon {
   background-position-x: 0px;
 }
-/* line 250, ../sass/main.scss */
+/* line 251, ../sass/main.scss */
 #tab_bar .icon.feed_icon {
   background-position-x: -30px;
 }
-/* line 254, ../sass/main.scss */
+/* line 255, ../sass/main.scss */
 #tab_bar .icon.new_post_icon {
   background-position-x: -60px;
 }
-/* line 259, ../sass/main.scss */
+/* line 260, ../sass/main.scss */
 #tab_bar .tab_selected .icon {
   background-position-y: -30px;
 }
-/* line 263, ../sass/main.scss */
+/* line 264, ../sass/main.scss */
 #tab_bar li:first-child a {
   border-left: none;
 }
-/* line 267, ../sass/main.scss */
+/* line 268, ../sass/main.scss */
 #tab_bar li:last-child a {
   border-right: none;
 }
-/* line 271, ../sass/main.scss */
+/* line 272, ../sass/main.scss */
 #tab_bar .tab_selected a {
   color: #ffffff;
   background: #111111;
 }
 
 /*---------- PANELS --------------------------------------------------------- */
-/* line 279, ../sass/main.scss */
+/* line 280, ../sass/main.scss */
 #panels {
   height: 100%;
   position: relative;
@@ -543,12 +544,12 @@ td {
   overflow-x: hidden;
 }
 
-/* line 287, ../sass/main.scss */
+/* line 288, ../sass/main.scss */
 #panels > div.current {
   display: block;
 }
 
-/* line 291, ../sass/main.scss */
+/* line 292, ../sass/main.scss */
 .panel_wrapper {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -562,24 +563,24 @@ td {
   background-color: #333;
 }
 
-/* line 303, ../sass/main.scss */
+/* line 304, ../sass/main.scss */
 .padded_content_wrapper, .content_wrapper {
   margin-top: 42px;
   padding-bottom: 70px;
 }
 
-/* line 308, ../sass/main.scss */
+/* line 309, ../sass/main.scss */
 .padded_content_wrapper {
   padding: 20px;
   padding-bottom: 90px;
 }
 
 /*---------- PANEL-SPECIFIC STYLES ------------------------------------------ */
-/* line 314, ../sass/main.scss */
+/* line 315, ../sass/main.scss */
 #login_panel {
   text-align: center;
 }
-/* line 317, ../sass/main.scss */
+/* line 318, ../sass/main.scss */
 #login_panel .app_logo {
   width: 100px;
   height: 100px;
@@ -589,7 +590,7 @@ td {
   display: inline-block;
 }
 
-/* line 328, ../sass/main.scss */
+/* line 329, ../sass/main.scss */
 #profile_panel .link_posts {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -600,24 +601,24 @@ td {
   margin-bottom: 22px;
 }
 
-/* line 336, ../sass/main.scss */
+/* line 337, ../sass/main.scss */
 #feed_panel .no_links_message {
   text-align: center;
   color: #cccccc;
 }
-/* line 340, ../sass/main.scss */
+/* line 341, ../sass/main.scss */
 #feed_panel .no_links_message h2 {
   color: white;
   font-size: 24px;
 }
-/* line 345, ../sass/main.scss */
+/* line 346, ../sass/main.scss */
 #feed_panel .no_links_message img {
   width: 60%;
   margin-bottom: 8px;
 }
 
 /*---------- TOP BAR -------------------------------------------------------- */
-/* line 354, ../sass/main.scss */
+/* line 355, ../sass/main.scss */
 .top_bar {
   height: 42px;
   position: fixed;
@@ -627,20 +628,20 @@ td {
   background: #222222;
   color: white;
 }
-/* line 364, ../sass/main.scss */
+/* line 365, ../sass/main.scss */
 .top_bar h1 {
   float: left;
   padding: 13px;
   font-size: 16px;
   font-weight: bold;
 }
-/* line 371, ../sass/main.scss */
+/* line 372, ../sass/main.scss */
 .top_bar .back {
   float: left;
   display: none;
   color: white;
 }
-/* line 376, ../sass/main.scss */
+/* line 377, ../sass/main.scss */
 .top_bar .back span {
   margin-left: 6px;
   padding: 4px 8px;
@@ -653,11 +654,11 @@ td {
   border-radius: 2px;
 }
 
-/* line 389, ../sass/main.scss */
+/* line 390, ../sass/main.scss */
 .back.hasBack {
   display: block;
 }
-/* line 393, ../sass/main.scss */
+/* line 394, ../sass/main.scss */
 .back .chevron {
   width: 15px;
   height: 24px;
@@ -670,7 +671,7 @@ td {
 }
 
 /*---------- LINK POSTS ----------------------------------------------------- */
-/* line 407, ../sass/main.scss */
+/* line 408, ../sass/main.scss */
 .link_post {
   background-color: white;
   padding: 4px;
@@ -679,18 +680,18 @@ td {
   /* clearfix */
 }
 
-/* line 414, ../sass/main.scss */
+/* line 415, ../sass/main.scss */
 .scoring {
   width: 20%;
   min-width: 60px;
   float: left;
   text-align: center;
 }
-/* line 420, ../sass/main.scss */
+/* line 421, ../sass/main.scss */
 .scoring div {
   text-align: center;
 }
-/* line 424, ../sass/main.scss */
+/* line 425, ../sass/main.scss */
 .scoring .upvote, .scoring .downvote {
   display: inline-block;
   width: 20px;
@@ -698,58 +699,58 @@ td {
   background: url('/images/arrows.png?1395204244');
   background-size: 40px 40px;
 }
-/* line 432, ../sass/main.scss */
+/* line 433, ../sass/main.scss */
 .scoring .downvote {
   background-position: 0px 20px;
 }
-/* line 436, ../sass/main.scss */
+/* line 437, ../sass/main.scss */
 .scoring .score {
   padding: 2px 0px 4px 0px;
   font-weight: 600;
   color: #999;
 }
 
-/* line 444, ../sass/main.scss */
+/* line 445, ../sass/main.scss */
 .link_post.upvoted .upvote {
   background-position: 20px 0px;
 }
-/* line 448, ../sass/main.scss */
+/* line 449, ../sass/main.scss */
 .link_post.upvoted .score {
   color: #019bc6;
 }
 
-/* line 454, ../sass/main.scss */
+/* line 455, ../sass/main.scss */
 .link_post.downvoted .downvote {
   background-position: 20px 20px;
 }
-/* line 458, ../sass/main.scss */
+/* line 459, ../sass/main.scss */
 .link_post.downvoted .score {
   color: #ff2300;
 }
 
-/* line 463, ../sass/main.scss */
+/* line 464, ../sass/main.scss */
 .post_content {
   padding: 4px;
 }
-/* line 466, ../sass/main.scss */
+/* line 467, ../sass/main.scss */
 .post_content h2 {
   font-size: 16px;
   line-height: 18px;
   margin-bottom: 0px;
   font-weight: normal;
 }
-/* line 473, ../sass/main.scss */
+/* line 474, ../sass/main.scss */
 .post_content .post_domain {
   color: #666;
 }
-/* line 477, ../sass/main.scss */
+/* line 478, ../sass/main.scss */
 .post_content .post_info {
   font-size: 12px;
   color: #aaa;
 }
 
 /*---------- NOTIFICATIONS -------------------------------------------------- */
-/* line 486, ../sass/main.scss */
+/* line 487, ../sass/main.scss */
 .notif {
   position: fixed;
   top: -60px;
@@ -772,21 +773,21 @@ td {
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
-/* line 503, ../sass/main.scss */
+/* line 504, ../sass/main.scss */
 .notif.notif_good {
   background: #008c2a;
 }
-/* line 507, ../sass/main.scss */
+/* line 508, ../sass/main.scss */
 .notif.notif_bad {
   background: #ff2300;
 }
-/* line 511, ../sass/main.scss */
+/* line 512, ../sass/main.scss */
 .notif.show_notif {
   top: 0px;
 }
 
 /*---------- SPINNER -------------------------------------------------------- */
-/* line 518, ../sass/main.scss */
+/* line 519, ../sass/main.scss */
 .spinner {
   position: absolute;
   display: none;
@@ -799,7 +800,7 @@ td {
 }
 
 /*---------- DISCONNECTED --------------------------------------------------- */
-/* line 531, ../sass/main.scss */
+/* line 532, ../sass/main.scss */
 .disconnected {
   position: absolute;
   display: none;
@@ -823,7 +824,7 @@ td {
   z-index: 9998;
   /* force above panels (but not notifications) */
 }
-/* line 546, ../sass/main.scss */
+/* line 547, ../sass/main.scss */
 .disconnected.pop {
   background-color: #ff2300;
   color: white;

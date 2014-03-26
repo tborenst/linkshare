@@ -146,6 +146,7 @@ button, .button {
 
     &.button_create {
         background-color: $createButtonColor;
+        color: white;
 
         &:active {
             background-color: darken($createButtonColor, 5%);
