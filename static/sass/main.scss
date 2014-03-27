@@ -244,21 +244,17 @@ td {
         margin: 5px 0 7px 0;
         pointer-events:none;
 
-        &.profile_icon {
-            background-position-x: 0px;
-        }
-
-        &.feed_icon {
-            background-position-x: -$tabBarIconWidth*1;
-        }
-
-        &.new_post_icon {
-            background-position-x: -$tabBarIconWidth*2;
-        }
+        &.profile_icon {  background-position: 0px                 0px; }
+        &.feed_icon {     background-position: -$tabBarIconWidth*1 0px; }
+        &.new_post_icon { background-position: -$tabBarIconWidth*2 0px; }
     }
 
     .tab_selected .icon {
-        background-position-y: -$tabBarIconHeight*1
+
+        &.profile_icon {  background-position: 0px                   (-$tabBarIconHeight*1); }
+        &.feed_icon {     background-position: (-$tabBarIconWidth*1) (-$tabBarIconHeight*1); }
+        &.new_post_icon { background-position: (-$tabBarIconWidth*2) (-$tabBarIconHeight*1); }
+
     }
 
     li:first-child a {
