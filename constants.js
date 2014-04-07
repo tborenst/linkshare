@@ -10,6 +10,7 @@ module.exports = {
     ERR_USER_DOESNT_EXIST: "the user does not exist",
     ERR_USER_EXISTS: "username already exists",
     ERR_NOT_MATCH: "the username/password combination does not match",
+    ERR_TIMEOUT: "the request has timed out",
     // auth
     AUTH_SUCCESS: "authentication successful",
     AUTH_FAILURE: "authentication failed",
@@ -22,5 +23,7 @@ module.exports = {
     MSG_OK: "OK",
     // regular expressions
     REGEX_URL: new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/),
-    REGEX_HTTP_HTTPS: new RegExp(/^https?:\/\//)
+    REGEX_HTTP_HTTPS: new RegExp(/^https?:\/\//),
+    // other constants
+    CONST_DB_TIMEOUT: 5000,
 }

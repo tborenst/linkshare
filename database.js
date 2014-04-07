@@ -49,9 +49,8 @@ var closeDb = function(callback){
  * getCollection:
  * Waits until the database is opened and then gets a collection.
  * - callback takes arguments (error, collection)
- * - veto is an optional parameter - set to true, this function will do nothing
  ***/
-var getCollection = function(name, callback, veto){
+var getCollection = function(name, callback){
     // function to open a collection
     var openCollection = function(){
         client.collection(name, function(error, collection){
@@ -64,11 +63,19 @@ var getCollection = function(name, callback, veto){
     }
 
     // wait until the database is open before you open the collection
+    var startTime = new Date();
+
     if(dbOpen){
         openCollection();
     } else {
         setTimeout(function(){
-            getCollection(name, callback);
+            var currentTime = new Date();
+            if(currentTime.getTime() - startTime.getTime()){
+                callback(constants.ERR_TIMEOUT, null);
+                console.error("Error: connection to the database has timed out");
+            } else {
+                getCollection(name, callback);
+            }
         }, 0);
     }
 }
@@ -146,7 +153,7 @@ var validateUserPassword = function(username, password, callback){
         if(error){
             callback(constants.ERR_INTERNAL, false);
         } else {
-            if(userObject.password == password){
+            if(userObject && userObject.password == password){
                 callback(null, true);
             } else {
                 callback(null, false);
