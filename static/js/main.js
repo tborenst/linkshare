@@ -603,19 +603,6 @@ Handlebars.registerHelper("getMapUrl", function(location){
                + location.lat + "," + location.lon;
 });
 
-/* Given the date string returned by the server on link objects, returns
- * only the month (abbreviated) and the day. For example, the string
- * "Mon Mar 24 2014" will return Mar 24.
- *
- * NOTE: This is temporary fix--in the future we should definitely store
- * the full date object on the server and use something like jquery.timeago
- * to compute fuzzy timestamps
- */
-Handlebars.registerHelper("formatDate", function(dateStr){
-    var date_components = dateStr.split(" ");
-    return date_components[1] + " " + date_components[2];
-});
-
 /* Given a url, return the domain associated with that url. This method uses
  * jquery to create a link element with the href set as the url, then takes
  * advantage of the browsers built-in url parser to get the hostname back out
