@@ -76,6 +76,7 @@ input[type=text], input[type=password], .button, button {
     width: 100%;
     @include box-sizing(border-box);
     -webkit-appearance: none; /* remove webkit default input styling */
+    background-image: none; /* remove mobile firefox default input styling */
 
     &:focus {
         /* overwrite webkit default input focus outline */
@@ -89,6 +90,7 @@ input[type=text], input[type=password], button, .button {
     padding: 12px;
     font-size: 14px;
     margin-bottom: 22px;
+    font-weight: bold; /* necessary for mobile firefox */
 }
 
 input[type=text], input[type=password] {
