@@ -295,6 +295,14 @@ function loadContentForPanel(nextPanel){
                         html = getHTML("link_posts_template", response.links);
                         loadTarget = nextPanel.find(".content_wrapper");
                         loadTarget.html(html);
+
+                        /* init timeago */
+                        $(".timeago").timeago();
+                        /* NOTE: we could actually just do this on the server
+                         * and send back the timeago string but then we'd lose
+                         * the nifty autoupdating that timeago does if you do it
+                         * clientside
+                         */
                     }
                 }
             });

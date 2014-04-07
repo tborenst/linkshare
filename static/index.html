@@ -156,7 +156,7 @@
         <!-- javascript -->
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <script src="jquery.timeago.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/jquery.timeago.js"></script>
 
         <!-- handlebars templates go here -->
 
@@ -223,7 +223,7 @@
                         <a href="{{ this.url }}" target="_blank">{{ this.title }}</a>
                         <span class="post_domain">({{getDomain this.url}})</span>
                     </h2>
-                    <span class="post_info">submitted on {{this.date}} by {{ this.username }}</span>
+                    <span class="post_info">submitted <abbr class="timeago" title="{{ this.date }}"></abbr> by {{ this.username }}</span>
                 </div>
             </li>
         </script>
