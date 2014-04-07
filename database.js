@@ -228,7 +228,7 @@ var makeRandomId = function(length){
  ***/
 var makeLinkObject = function(username, url, title, location){
     var date = new Date();
-    var dateStr = date.toDateString();
+    var dateStr = date.toISOString();
     var linkId = makeRandomId(10);
     return {
         username: username,
