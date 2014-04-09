@@ -377,16 +377,41 @@ var visits = {
 
 /* ---------- NOTIFICATIONS ------------------------------------------------- */
 
-// TODO Handle case where multiple notifications need to be queued
 function showNotification(msg, type){
-    type = type ? type : "good";
 
-    var notif = $(".notif.notif_" + type);
-    $(".notif_content", notif).html(msg);
-    notif.addClass("show_notif");
-    setTimeout(function(){
-        notif.removeClass("show_notif");
-    }, 3000);
+    // queue up a notification
+    $(document).queue("notificationsQueue", function(){
+        type = type ? type : "good";
+
+        var notif = $(".notif.notif_" + type);
+        $(".notif_content", notif).html(msg);
+        notif.addClass("show_notif");
+
+        setTimeout(function(){
+            notif.removeClass("show_notif");
+        }, 3000);
+
+        /*
+         * these operations under a longer setTimeout to give time for the
+         * previous notification to CSS transition back to it's hidden state
+         */
+        setTimeout(function(){
+            // remove this notification from the queue
+            $(document).queue("notificationsQueue").shift();
+
+            // see if there is stuff left in the queue
+            if($(document).queue("notificationsQueue").length > 0){
+                // if so, run it
+                $(document).queue("notificationsQueue")[0]();
+            }
+        }, 3500);
+    });
+
+    // if the queue only has one notification in it, run it immediately
+    if($(document).queue("notificationsQueue").length == 1){
+        $(document).queue("notificationsQueue")[0]();
+    }
+
 }
 
 /* ---------- SPINNER ------------------------------------------------------- */
