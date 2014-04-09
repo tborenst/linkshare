@@ -482,9 +482,6 @@ function updateLinkAppearance(id, vote, score){
 
 // TODO: The logic here can probably be reorganized */
 function handleAjaxError(jqXHR, textStatus, errorThrown){
-    console.log(jqXHR);
-    console.log(textStatus);
-    console.log(errorThrown);
 
     /* Attempt to parse out a returned error message */
     try {
